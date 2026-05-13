@@ -8,7 +8,13 @@ description: "Task list template for feature implementation"
 **Input**: Design documents from `/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: Tests are MANDATORY under this project's constitution (Principle II,
+"Testable by Design"). Every user story MUST include unit, integration, and
+end-to-end (E2E / Playwright) test tasks; the repository MUST sustain >=70%
+meaningful coverage and >=5 Playwright user-journey tests in total. Do not remove
+or defer test tasks. The "OPTIONAL" markers retained in the sample sections below
+refer only to whether the *sample wording* applies to your feature; the tests
+themselves are required.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
