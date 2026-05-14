@@ -7,7 +7,9 @@ export function App() {
         Skip to main content
       </a>
       <main id="app-main" className="app-shell" aria-labelledby="app-heading">
-        <h1 id="app-heading">Personal Todo</h1>
+        <h1 id="app-heading" className="app-shell__title">
+          Your tasks
+        </h1>
         <HomePage />
       </main>
     </>

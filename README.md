@@ -12,6 +12,7 @@ Full-stack TypeScript monorepo for a **personal todo** MVP: create, list, toggle
 - **Research / decisions**: [specs/001-personal-todo-app/research.md](specs/001-personal-todo-app/research.md)
 - **Architecture (mirrored from plan)**: [docs/architecture.md](docs/architecture.md)
 - **Constitution (quality gates)**: [.specify/memory/constitution.md](.specify/memory/constitution.md)
+- **Professional UI epic (002)**: [specs/002-professional-ui/spec.md](specs/002-professional-ui/spec.md)
 
 ## Repository layout
 

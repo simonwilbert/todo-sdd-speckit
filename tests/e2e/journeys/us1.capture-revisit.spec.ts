@@ -8,7 +8,9 @@ test.describe("US1 — capture and revisit", () => {
     );
 
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: /personal todo/i })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /your tasks|personal todo/i }),
+    ).toBeVisible();
     await expect(page.getByLabel(/new task/i)).toBeVisible({ timeout: 60_000 });
 
     await page.getByLabel(/new task/i).fill("Buy milk");

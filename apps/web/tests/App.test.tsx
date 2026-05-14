@@ -34,11 +34,10 @@ describe("App", () => {
 
     try {
       renderWithQuery(<App />);
-      expect(screen.getByRole("heading", { name: /personal todo/i })).toBeVisible();
+      expect(screen.getByRole("heading", { name: /^your tasks$/i })).toBeVisible();
       await waitFor(() => {
-        expect(screen.getByRole("heading", { name: /your tasks/i })).toBeVisible();
+        expect(screen.getByRole("textbox", { name: /^New task$/i })).toBeVisible();
       });
-      expect(screen.getByRole("textbox", { name: /^New task$/i })).toBeVisible();
     } finally {
       vi.unstubAllGlobals();
     }

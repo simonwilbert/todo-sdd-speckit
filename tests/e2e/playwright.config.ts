@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:5173";
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:5174";
 
 export default defineConfig({
   testDir: "./journeys",
@@ -19,7 +19,7 @@ export default defineConfig({
   webServer: process.env.PLAYWRIGHT_NO_SERVER
     ? undefined
     : {
-        command: "npm run dev -w @todo/web -- --host 127.0.0.1 --port 5173",
+        command: "npm run dev -w @todo/web -- --host 127.0.0.1 --port 5174",
         url: baseURL,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,

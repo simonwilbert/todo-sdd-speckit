@@ -46,9 +46,7 @@ describe("TodoPageStates (US4)", () => {
     await waitFor(() => {
       expect(screen.getByRole("heading", { name: /no tasks yet/i })).toBeVisible();
     });
-    expect(
-      screen.getByRole("button", { name: /add your first task/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /add first task/i })).toBeInTheDocument();
   });
 
   it("shows list loading only after 200 ms when fetch stays slow", async () => {
@@ -62,10 +60,10 @@ describe("TodoPageStates (US4)", () => {
       ),
     );
     renderHome();
-    expect(screen.queryByText(/loading your saved tasks/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/loading tasks/i)).not.toBeInTheDocument();
     await waitFor(
       () => {
-        expect(screen.getByText(/loading your saved tasks/i)).toBeInTheDocument();
+        expect(screen.getByText(/loading tasks/i)).toBeInTheDocument();
       },
       { timeout: 2000 },
     );
@@ -96,7 +94,7 @@ describe("TodoPageStates (US4)", () => {
     await waitFor(() => {
       expect(screen.getByRole("alert")).toBeVisible();
     });
-    expect(screen.getByRole("alert")).toHaveTextContent(/could not load todos \(503\)/i);
+    expect(screen.getByRole("alert")).toHaveTextContent(/could not load tasks \(503\)/i);
 
     await user.click(screen.getByRole("button", { name: /^retry$/i }));
 
@@ -119,9 +117,9 @@ describe("TodoPageStates (US4)", () => {
     );
     renderHome();
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: /add your first task/i })).toBeVisible();
+      expect(screen.getByRole("button", { name: /add first task/i })).toBeVisible();
     });
-    await user.click(screen.getByRole("button", { name: /add your first task/i }));
+    await user.click(screen.getByRole("button", { name: /add first task/i }));
     expect(screen.getByRole("textbox", { name: /^New task$/i })).toHaveFocus();
   });
 });

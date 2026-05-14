@@ -4,9 +4,12 @@ alwaysApply: true
 
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan at
-`specs/001-personal-todo-app/plan.md` (with companion artefacts
-`research.md`, `data-model.md`, `contracts/openapi.yaml`, and
-`quickstart.md` in the same directory). The active project constitution
-is at `.specify/memory/constitution.md` (v1.1.0).
+shell commands, and other important information, read the **active** plan at
+`specs/002-professional-ui/plan.md` (with companion artefacts `research.md`,
+`data-model.md`, `contracts/`, and `quickstart.md` in the same directory).
+
+The **core app** (API, persistence, original user stories) remains documented under
+`specs/001-personal-todo-app/` (`plan.md`, `contracts/openapi.yaml`, etc.).
+
+The active project constitution is at `.specify/memory/constitution.md` (v1.1.0).
 <!-- SPECKIT END -->

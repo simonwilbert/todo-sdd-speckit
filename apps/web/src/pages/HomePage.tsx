@@ -23,7 +23,7 @@ export function HomePage() {
   const loadErrorMessage =
     todosQuery.error instanceof Error
       ? todosQuery.error.message
-      : "Could not load tasks. Check that the API is running and try again.";
+      : "Tasks could not be loaded. Start the API and try again.";
 
   const serverError =
     createMutation.isError && createMutation.error instanceof Error
@@ -36,9 +36,7 @@ export function HomePage() {
   const showTodoList = listReady && todos.length > 0;
 
   return (
-    <section aria-labelledby="tasks-heading">
-      <h2 id="tasks-heading">Your tasks</h2>
-
+    <section className="home-page" aria-label="Task list and entry">
       {todosQuery.isError ? (
         <QueryErrorBanner
           message={loadErrorMessage}
@@ -57,7 +55,7 @@ export function HomePage() {
 
       {todosQuery.isPending && showDelayedListLoading ? (
         <p role="status" className="todo-list-loading" aria-live="polite">
-          Loading your saved tasks…
+          Loading tasks…
         </p>
       ) : null}
 

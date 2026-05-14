@@ -39,7 +39,7 @@ export function TodoDeleteUndo({
   return (
     <div role="status" aria-live="polite" className="todo-delete-undo">
       <span className="todo-delete-undo__message">
-        Task removed.
+        Task removed — you can still undo.
         <span className="sr-only"> {taskPreview}</span>{" "}
         <button type="button" className="todo-delete-undo__undo" onClick={handleUndo}>
           Undo

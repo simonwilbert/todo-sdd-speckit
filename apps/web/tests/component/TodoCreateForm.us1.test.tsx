@@ -11,7 +11,7 @@ describe("TodoCreateForm (US1)", () => {
     render(<TodoCreateForm onCreate={onCreate} isSubmitting={false} />);
     await user.click(screen.getByRole("button", { name: /add task/i }));
     expect(onCreate).not.toHaveBeenCalled();
-    expect(screen.getByRole("status")).toHaveTextContent(/enter a task/i);
+    expect(screen.getByRole("status")).toHaveTextContent(/short description/i);
   });
 
   it("does not call onCreate for whitespace-only text", async () => {
@@ -21,7 +21,7 @@ describe("TodoCreateForm (US1)", () => {
     await user.type(screen.getByRole("textbox", { name: /^New task$/i }), "   ");
     await user.click(screen.getByRole("button", { name: /add task/i }));
     expect(onCreate).not.toHaveBeenCalled();
-    expect(screen.getByRole("status")).toHaveTextContent(/enter a task/i);
+    expect(screen.getByRole("status")).toHaveTextContent(/short description/i);
   });
 
   it("shows validation when text exceeds max length", async () => {

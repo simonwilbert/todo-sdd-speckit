@@ -30,7 +30,7 @@ export function TodoCreateForm({
     setLocalError(null);
     const trimmed = text.trim();
     if (!trimmed) {
-      setLocalError("Enter a task before adding.");
+      setLocalError("Add a short description before continuing.");
       return;
     }
     if (trimmed.length > TODO_TEXT_MAX_LENGTH) {
@@ -48,29 +48,40 @@ export function TodoCreateForm({
   }
 
   return (
-    <form onSubmit={(e) => void handleSubmit(e)} aria-labelledby={`${fieldId}-legend`}>
+    <form
+      className="todo-create-form"
+      onSubmit={(e) => void handleSubmit(e)}
+      aria-labelledby={`${fieldId}-legend`}
+    >
       <fieldset>
         <legend id={`${fieldId}-legend`} className="sr-only">
-          Task entry form
+          New task form
         </legend>
         <label htmlFor={fieldId}>New task</label>
-        <input
-          id={fieldId}
-          name="text"
-          type="text"
-          maxLength={TODO_TEXT_MAX_LENGTH}
-          value={text}
-          disabled={isSubmitting}
-          onChange={(ev) => {
-            setText(ev.target.value);
-            setLocalError(null);
-          }}
-          aria-invalid={validationMessage ? true : undefined}
-          aria-describedby={validationMessage ? errorId : undefined}
-        />
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Adding…" : "Add task"}
-        </button>
+        <div className="todo-create-form__row">
+          <input
+            id={fieldId}
+            className="todo-create-form__input"
+            name="text"
+            type="text"
+            maxLength={TODO_TEXT_MAX_LENGTH}
+            value={text}
+            disabled={isSubmitting}
+            onChange={(ev) => {
+              setText(ev.target.value);
+              setLocalError(null);
+            }}
+            aria-invalid={validationMessage ? true : undefined}
+            aria-describedby={validationMessage ? errorId : undefined}
+          />
+          <button
+            className="todo-create-form__submit"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Adding…" : "Add task"}
+          </button>
+        </div>
       </fieldset>
       {validationMessage ? (
         <p id={errorId} role="status" className="field-error">

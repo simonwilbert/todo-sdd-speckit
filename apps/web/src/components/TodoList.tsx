@@ -84,7 +84,7 @@ export function TodoList({ todos }: TodoListProps) {
           {deleteError}
         </p>
       ) : null}
-      <ul aria-label="Tasks">
+      <ul className="todo-list" aria-label="Tasks">
         {todos.map((todo) => (
           <TodoItem
             key={todo.id}

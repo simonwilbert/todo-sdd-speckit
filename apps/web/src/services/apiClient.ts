@@ -10,7 +10,7 @@ function apiUrl(path: string): string {
 export async function listTodosRequest(): Promise<Todo[]> {
   const res = await fetch(apiUrl("/todos"));
   if (!res.ok) {
-    throw new Error(`Could not load todos (${res.status})`);
+    throw new Error(`Could not load tasks (${res.status})`);
   }
   return res.json() as Promise<Todo[]>;
 }

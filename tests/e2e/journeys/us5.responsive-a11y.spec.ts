@@ -49,14 +49,16 @@ test.describe("US5 — responsive layout and accessibility", () => {
 
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: /personal todo/i })).toBeVisible({
+    await expect(
+      page.getByRole("heading", { name: /your tasks|personal todo/i }),
+    ).toBeVisible({
       timeout: 60_000,
     });
 
     await expectNoHorizontalOverflow(page);
     await expectMinTouchTarget(page.getByRole("button", { name: /add task/i }));
     await expectMinTouchTarget(
-      page.getByRole("button", { name: /add your first task/i }),
+      page.getByRole("button", { name: /add (your )?first task/i }),
     );
 
     await expectNoCriticalOrSeriousAxeViolations(page);
