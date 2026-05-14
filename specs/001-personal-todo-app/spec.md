@@ -12,7 +12,7 @@ strong quality practices (clear specs, automated tests, accessibility, and secur
 considerations) so it's easy to maintain and extend later (e.g., adding user
 accounts) without adding unnecessary features now."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Capture and revisit tasks across sessions (Priority: P1)
 
@@ -203,7 +203,7 @@ on mobile, and is operable by keyboard alone. The app passes an automated WCAG
   the visible state may briefly diverge between instances but reconciles on
   the next reload; no data is silently lost.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -247,7 +247,7 @@ on mobile, and is operable by keyboard alone. The app passes an automated WCAG
   covering each acceptance scenario above; every acceptance criterion in this
   specification MUST be reachable by at least one automated test.
 
-### Key Entities *(include if feature involves data)*
+### Key Entities _(include if feature involves data)_
 
 - **Task**: A single to-do item belonging to the personal user.
   - Attributes (conceptual, not implementation): a stable identity, the user's
@@ -259,7 +259,7 @@ on mobile, and is operable by keyboard alone. The app passes an automated WCAG
     extensions (e.g., user accounts, projects, tags) MUST be possible without
     breaking the MVP data shape.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
