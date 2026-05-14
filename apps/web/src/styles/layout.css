@@ -56,7 +56,6 @@ ul {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  cursor: pointer;
   margin-bottom: 0;
 }
 
@@ -67,4 +66,46 @@ ul {
 .todo-item__text--completed {
   text-decoration: line-through;
   opacity: 0.75;
+}
+
+.todo-item__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  cursor: pointer;
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.todo-item__delete {
+  flex-shrink: 0;
+  margin-top: 0;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.todo-delete-undo {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: #1a1a1a;
+  color: #f5f5f5;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.todo-delete-undo__message {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.todo-delete-undo__undo {
+  margin-top: 0;
+  background: #f5f5f5;
+  color: #1a1a1a;
+  font-weight: 600;
 }

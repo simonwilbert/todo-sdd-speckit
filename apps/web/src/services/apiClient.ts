@@ -56,3 +56,21 @@ export async function patchTodoRequest(id: string, body: TodoPatch): Promise<Tod
   }
   return res.json() as Promise<Todo>;
 }
+
+export async function deleteTodoRequest(id: string): Promise<void> {
+  const res = await fetch(apiUrl(`/todos/${encodeURIComponent(id)}`), {
+    method: "DELETE",
+  });
+  if (!res.ok) {
+    let message = `Could not delete todo (${res.status})`;
+    try {
+      const envelope = (await res.json()) as { error?: { message?: string } };
+      if (envelope?.error?.message) {
+        message = envelope.error.message;
+      }
+    } catch {
+      /* ignore */
+    }
+    throw new Error(message);
+  }
+}

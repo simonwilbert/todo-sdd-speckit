@@ -24,6 +24,13 @@ function mockPrisma(): PrismaClient {
         createdAt: new Date("2025-01-01T00:00:00.000Z"),
         updatedAt: new Date("2025-06-03T12:00:00.000Z"),
       }),
+      delete: vi.fn().mockResolvedValue({
+        id: "00000000-0000-4000-8000-000000000001",
+        text: "mock",
+        completed: false,
+        createdAt: new Date("2025-01-01T00:00:00.000Z"),
+        updatedAt: new Date("2025-01-01T00:00:00.000Z"),
+      }),
     },
   } as unknown as PrismaClient;
 }
@@ -114,5 +121,12 @@ describe("createApp (mocked prisma)", () => {
     expect(res.status).toBe(200);
     expect(res.body.completed).toBe(true);
     expect(res.body.text).toBe("mock");
+  });
+
+  it("DELETE /todos/:id returns 204", async () => {
+    const app = createApp(mockPrisma());
+    const res = await request(app).delete("/todos/00000000-0000-4000-8000-000000000001");
+    expect(res.status).toBe(204);
+    expect(res.text).toBe("");
   });
 });

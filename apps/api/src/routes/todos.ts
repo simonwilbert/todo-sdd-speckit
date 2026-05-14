@@ -8,7 +8,7 @@ import * as todoService from "../services/todoService.js";
 type ParamsId = Request & { validatedParams: { id: string } };
 
 /**
- * REST `/todos` router. PUT/DELETE follow in later user-story tasks.
+ * REST `/todos` router.
  */
 export function createTodosRouter(prisma: PrismaClient) {
   const r = Router();
@@ -47,6 +47,16 @@ export function createTodosRouter(prisma: PrismaClient) {
       }
     },
   );
+
+  r.delete("/:id", validateParams(todoIdParamSchema), async (req, res, next) => {
+    try {
+      const { id } = (req as ParamsId).validatedParams;
+      await todoService.deleteTodo(prisma, id);
+      res.status(204).send();
+    } catch (e) {
+      next(e);
+    }
+  });
 
   return r;
 }

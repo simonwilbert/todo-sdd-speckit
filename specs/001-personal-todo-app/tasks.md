@@ -131,14 +131,14 @@ Per [plan.md](./plan.md): `apps/web/`, `apps/api/`, `packages/shared/`, `tests/e
 
 ### Tests for User Story 3
 
-- [ ] T050 [P] [US3] Add failing API integration tests for `DELETE /todos/:id` and 404 semantics in `apps/api/tests/integration/todos.us3.test.ts`
-- [ ] T051 [P] [US3] Add failing component tests for delete + undo timer behavior in `apps/web/tests/component/TodoDeleteUndo.us3.test.tsx`
-- [ ] T052 [P] [US3] Add failing Playwright journey in `tests/e2e/journeys/us3.delete-undo.spec.ts`
+- [x] T050 [P] [US3] Add failing API integration tests for `DELETE /todos/:id` and 404 semantics in `apps/api/tests/integration/todos.us3.test.ts`
+- [x] T051 [P] [US3] Add failing component tests for delete + undo timer behavior in `apps/web/tests/component/TodoDeleteUndo.us3.test.tsx`
+- [x] T052 [P] [US3] Add failing Playwright journey in `tests/e2e/journeys/us3.delete-undo.spec.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T053 [US3] Implement `deleteTodo` in `apps/api/src/services/todoService.ts` and `DELETE /todos/:id` in `apps/api/src/routes/todos.ts`
-- [ ] T054 [US3] Implement optimistic delete + undo snackbar (timer-bound) in `apps/web/src/components/TodoDeleteUndo.tsx` and integrate from `apps/web/src/components/TodoList.tsx`
+- [x] T053 [US3] Implement `deleteTodo` in `apps/api/src/services/todoService.ts` and `DELETE /todos/:id` in `apps/api/src/routes/todos.ts`
+- [x] T054 [US3] Implement optimistic delete + undo snackbar (timer-bound) in `apps/web/src/components/TodoDeleteUndo.tsx` and integrate from `apps/web/src/components/TodoList.tsx`
 
 **Checkpoint**: US3 acceptance scenarios pass; T050–T052 GREEN.
 

@@ -23,3 +23,7 @@ export async function updateTodoPatch(
   });
   return serializeTodo(row);
 }
+
+export async function deleteTodo(prisma: PrismaClient, id: string): Promise<void> {
+  await prisma.todo.delete({ where: { id } });
+}

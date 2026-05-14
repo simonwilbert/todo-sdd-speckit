@@ -15,29 +15,61 @@ const baseTodo: Todo = {
 describe("TodoItem (US2)", () => {
   it("associates checkbox with task text for screen readers", () => {
     const onToggle = vi.fn();
-    render(<TodoItem todo={baseTodo} onToggleCompleted={onToggle} isToggling={false} />);
+    const onDelete = vi.fn();
+    render(
+      <TodoItem
+        todo={baseTodo}
+        onToggleCompleted={onToggle}
+        isToggling={false}
+        onRequestDelete={onDelete}
+      />,
+    );
     expect(screen.getByRole("checkbox", { name: /buy oat milk/i })).toBeInTheDocument();
   });
 
   it("calls onToggleCompleted when checkbox is toggled", async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
-    render(<TodoItem todo={baseTodo} onToggleCompleted={onToggle} isToggling={false} />);
+    const onDelete = vi.fn();
+    render(
+      <TodoItem
+        todo={baseTodo}
+        onToggleCompleted={onToggle}
+        isToggling={false}
+        onRequestDelete={onDelete}
+      />,
+    );
     await user.click(screen.getByRole("checkbox", { name: /buy oat milk/i }));
     expect(onToggle).toHaveBeenCalledWith(true);
   });
 
   it("applies completed styling when todo.completed is true", () => {
     const onToggle = vi.fn();
+    const onDelete = vi.fn();
     const todo = { ...baseTodo, completed: true };
-    render(<TodoItem todo={todo} onToggleCompleted={onToggle} isToggling={false} />);
+    render(
+      <TodoItem
+        todo={todo}
+        onToggleCompleted={onToggle}
+        isToggling={false}
+        onRequestDelete={onDelete}
+      />,
+    );
     const text = screen.getByText("Buy oat milk");
     expect(text).toHaveClass("todo-item__text--completed");
   });
 
   it("disables checkbox while toggling", () => {
     const onToggle = vi.fn();
-    render(<TodoItem todo={baseTodo} onToggleCompleted={onToggle} isToggling />);
+    const onDelete = vi.fn();
+    render(
+      <TodoItem
+        todo={baseTodo}
+        onToggleCompleted={onToggle}
+        isToggling
+        onRequestDelete={onDelete}
+      />,
+    );
     expect(screen.getByRole("checkbox", { name: /buy oat milk/i })).toBeDisabled();
   });
 });
