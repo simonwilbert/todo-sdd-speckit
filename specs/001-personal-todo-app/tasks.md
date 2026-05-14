@@ -48,29 +48,29 @@ Per [plan.md](./plan.md): `apps/web/`, `apps/api/`, `packages/shared/`, `tests/e
 
 **⚠️ CRITICAL**: No user story work begins until this phase is complete.
 
-- [ ] T012 Implement TypeScript wire types for `Todo`, `TodoCreate`, `TodoPatch`, `TodoReplace`, and `Health` in `packages/shared/src/todo.ts` matching `specs/001-personal-todo-app/contracts/openapi.yaml`
-- [ ] T013 Implement zod schemas and parsers for the same shapes plus `Error` envelope in `packages/shared/src/schemas/todo.zod.ts`
-- [ ] T014 Re-export types and schemas from `packages/shared/src/index.ts`
-- [ ] T015 Create Prisma datasource + `Todo` model in `apps/api/prisma/schema.prisma` per `specs/001-personal-todo-app/data-model.md`
-- [ ] T016 Generate initial SQL migration under `apps/api/prisma/migrations/` for the `Todo` model
-- [ ] T017 Implement Prisma client singleton reading `DATABASE_URL` in `apps/api/src/db/client.ts`
-- [ ] T018 Implement `X-Request-Id` middleware in `apps/api/src/middleware/requestId.ts`
-- [ ] T019 Implement centralized JSON error handler (`{ error: { code, message, details? } }`) in `apps/api/src/middleware/errorHandler.ts`
-- [ ] T020 Implement zod validation helpers for body and params in `apps/api/src/middleware/validate.ts`
-- [ ] T021 Implement `GET /health` with Postgres readiness check in `apps/api/src/routes/health.ts`
-- [ ] T022 Create `apps/api/src/routes/todos.ts` exporting an Express `Router` (route handlers filled in user-story phases)
-- [ ] T023 Wire CORS, `express.json()`, routes (`/health`, `/todos`), and error middleware in `apps/api/src/server.ts`
-- [ ] T024 Configure Vitest + coverage threshold (≥70%) for API in `apps/api/vitest.config.ts`
-- [ ] T025 Configure Vitest + jsdom + Testing Library + coverage threshold (≥70%) for web in `apps/web/vitest.config.ts`
-- [ ] T026 Create three-service `docker/docker-compose.yml` (`postgres`, `api`, `web`) with healthchecks at `docker/docker-compose.yml`
-- [ ] T027 Add `docker/docker-compose.dev.yml` overrides (volumes, `dev` env files, published ports) at `docker/docker-compose.dev.yml`
-- [ ] T028 Add `docker/docker-compose.test.yml` overrides (ephemeral Postgres, `test` profile) at `docker/docker-compose.test.yml`
-- [ ] T029 Add `docker/.env.dev.example` and `docker/.env.test.example` documenting `DATABASE_URL`, `VITE_API_URL`, and ports under `docker/`
-- [ ] T030 Create multi-stage non-root `apps/api/Dockerfile` (builder + runtime `USER node`)
-- [ ] T031 [P] Create multi-stage non-root `apps/web/Dockerfile` (build static assets + serve via production-grade static server stage)
-- [ ] T032 Create `.github/workflows/ci.yml` running `pnpm install`, `pnpm -r lint`, `pnpm -r typecheck`, API integration tests (against `test` compose Postgres), web unit/component tests, `pnpm audit --prod`, and Docker build smoke at `.github/workflows/ci.yml`
-- [ ] T033 Create Playwright config with `baseURL`, compose-backed `webServer`, and mobile + desktop projects in `tests/e2e/playwright.config.ts`
-- [ ] T034 Add `pnpm run e2e` script at repository root `package.json` invoking Playwright from `tests/e2e/`
+- [x] T012 Implement TypeScript wire types for `Todo`, `TodoCreate`, `TodoPatch`, `TodoReplace`, and `Health` in `packages/shared/src/todo.ts` matching `specs/001-personal-todo-app/contracts/openapi.yaml`
+- [x] T013 Implement zod schemas and parsers for the same shapes plus `Error` envelope in `packages/shared/src/schemas/todo.zod.ts`
+- [x] T014 Re-export types and schemas from `packages/shared/src/index.ts`
+- [x] T015 Create Prisma datasource + `Todo` model in `apps/api/prisma/schema.prisma` per `specs/001-personal-todo-app/data-model.md`
+- [x] T016 Generate initial SQL migration under `apps/api/prisma/migrations/` for the `Todo` model
+- [x] T017 Implement Prisma client singleton reading `DATABASE_URL` in `apps/api/src/db/client.ts`
+- [x] T018 Implement `X-Request-Id` middleware in `apps/api/src/middleware/requestId.ts`
+- [x] T019 Implement centralized JSON error handler (`{ error: { code, message, details? } }`) in `apps/api/src/middleware/errorHandler.ts`
+- [x] T020 Implement zod validation helpers for body and params in `apps/api/src/middleware/validate.ts`
+- [x] T021 Implement `GET /health` with Postgres readiness check in `apps/api/src/routes/health.ts`
+- [x] T022 Create `apps/api/src/routes/todos.ts` exporting an Express `Router` (route handlers filled in user-story phases)
+- [x] T023 Wire CORS, `express.json()`, routes (`/health`, `/todos`), and error middleware in `apps/api/src/server.ts`
+- [x] T024 Configure Vitest + coverage threshold (≥70%) for API in `apps/api/vitest.config.ts`
+- [x] T025 Configure Vitest + jsdom + Testing Library + coverage threshold (≥70%) for web in `apps/web/vitest.config.ts`
+- [x] T026 Create three-service `docker/docker-compose.yml` (`postgres`, `api`, `web`) with healthchecks at `docker/docker-compose.yml`
+- [x] T027 Add `docker/docker-compose.dev.yml` overrides (volumes, `dev` env files, published ports) at `docker/docker-compose.dev.yml`
+- [x] T028 Add `docker/docker-compose.test.yml` overrides (ephemeral Postgres, `test` profile) at `docker/docker-compose.test.yml`
+- [x] T029 Add `docker/.env.dev.example` and `docker/.env.test.example` documenting `DATABASE_URL`, `VITE_API_URL`, and ports under `docker/`
+- [x] T030 Create multi-stage non-root `apps/api/Dockerfile` (builder + runtime `USER node`)
+- [x] T031 [P] Create multi-stage non-root `apps/web/Dockerfile` (build static assets + serve via production-grade static server stage)
+- [x] T032 Create `.github/workflows/ci.yml` running `pnpm install`, `pnpm -r lint`, `pnpm -r typecheck`, API integration tests (against `test` compose Postgres), web unit/component tests, `pnpm audit --prod`, and Docker build smoke at `.github/workflows/ci.yml`
+- [x] T033 Create Playwright config with `baseURL`, compose-backed `webServer`, and mobile + desktop projects in `tests/e2e/playwright.config.ts`
+- [x] T034 Add `pnpm run e2e` script at repository root `package.json` invoking Playwright from `tests/e2e/`
 
 **Checkpoint**: `docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml up` starts all services healthy; `GET http://localhost:3000/health` returns `{"status":"ok"}`; `pnpm -r typecheck` passes.
 

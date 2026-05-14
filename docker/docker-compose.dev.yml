@@ -1,0 +1,9 @@
+# Dev profile: same stack; tune env via `docker/.env.dev` (see `.env.dev.example`).
+services:
+  api:
+    environment:
+      NODE_ENV: development
+  web:
+    build:
+      args:
+        VITE_API_URL: http://localhost:3000
