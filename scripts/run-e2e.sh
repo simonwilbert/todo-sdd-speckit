@@ -26,4 +26,4 @@ if [[ -n "${DATABASE_URL:-}" ]]; then
   curl -sf "http://127.0.0.1:3000/health" >/dev/null
 fi
 
-exec npx playwright test -c tests/e2e/playwright.config.ts "$@"
+exec npm run playwright -w @todo/e2e -- "$@"

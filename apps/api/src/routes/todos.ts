@@ -1,4 +1,9 @@
-import { todoCreateSchema, todoIdParamSchema, todoPatchSchema } from "@todo/shared";
+import {
+  todoCreateSchema,
+  todoIdParamSchema,
+  todoPatchSchema,
+  todoReplaceSchema,
+} from "@todo/shared";
 import type { PrismaClient } from "@prisma/client";
 import type { Request } from "express";
 import { Router } from "express";
@@ -41,6 +46,22 @@ export function createTodosRouter(prisma: PrismaClient) {
         const { id } = (req as ParamsId).validatedParams;
         const body = req.body as { text?: string; completed?: boolean };
         const todo = await todoService.updateTodoPatch(prisma, id, body);
+        res.json(todo);
+      } catch (e) {
+        next(e);
+      }
+    },
+  );
+
+  r.put(
+    "/:id",
+    validateParams(todoIdParamSchema),
+    validateBody(todoReplaceSchema),
+    async (req, res, next) => {
+      try {
+        const { id } = (req as ParamsId).validatedParams;
+        const body = req.body as { text: string; completed: boolean };
+        const todo = await todoService.updateTodoReplace(prisma, id, body);
         res.json(todo);
       } catch (e) {
         next(e);

@@ -1,4 +1,4 @@
-import type { Todo, TodoPatch } from "@todo/shared";
+import type { Todo, TodoPatch, TodoReplace } from "@todo/shared";
 import type { PrismaClient } from "@prisma/client";
 import { serializeTodo } from "../util/serializeTodo.js";
 
@@ -20,6 +20,18 @@ export async function updateTodoPatch(
   const row = await prisma.todo.update({
     where: { id },
     data: patch,
+  });
+  return serializeTodo(row);
+}
+
+export async function updateTodoReplace(
+  prisma: PrismaClient,
+  id: string,
+  body: TodoReplace,
+): Promise<Todo> {
+  const row = await prisma.todo.update({
+    where: { id },
+    data: { text: body.text, completed: body.completed },
   });
   return serializeTodo(row);
 }

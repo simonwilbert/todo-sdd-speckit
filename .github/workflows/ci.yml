@@ -61,11 +61,14 @@ jobs:
       - name: Apply database migrations
         run: npm exec --workspace=@todo/api -- prisma migrate deploy
 
+      - name: Validate OpenAPI contract
+        run: npm run contracts:lint
+
       - name: CI script (format, lint, typecheck, workspace tests)
         run: npm run ci
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npm exec --workspace=@todo/e2e -- playwright install --with-deps chromium
 
       - name: End-to-end (Chromium projects only)
         run: npm run e2e -- --project=chromium-desktop

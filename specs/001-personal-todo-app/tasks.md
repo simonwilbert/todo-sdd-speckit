@@ -190,20 +190,20 @@ Per [plan.md](./plan.md): `apps/web/`, `apps/api/`, `packages/shared/`, `tests/e
 
 **Purpose**: Documentation, contract completeness, constitution follow-ups F1–F3, and quickstart validation.
 
-- [ ] T065 Create top-level `README.md` with project overview, link to `specs/001-personal-todo-app/quickstart.md`, and BMAD artefact index at repository root
-- [ ] T066 Create `docs/architecture.md` mirroring the Architecture overview from `specs/001-personal-todo-app/plan.md` at `docs/architecture.md`
-- [ ] T067 Create append-only `docs/ai-mcp-usage-log.md` and record AI/MCP usage for planning and implementation sessions at `docs/ai-mcp-usage-log.md`
-- [ ] T068 [P] Write MVP QA summary (test commands, coverage numbers, Playwright list) in `docs/qa/mvp-qa-report.md`
-- [ ] T069 [P] Write MVP accessibility review notes (manual checks beyond axe) in `docs/qa/mvp-a11y-review.md`
-- [ ] T070 [P] Write MVP security review notes (threats considered, mitigations, `pnpm audit` outcome) in `docs/qa/mvp-security-review.md`
-- [ ] T071 Add failing integration tests for `PUT /todos/:id` full replace per OpenAPI in `apps/api/tests/integration/todos.put.test.ts`
-- [ ] T072 Implement `PUT /todos/:id` using `TodoReplace` zod schema in `apps/api/src/routes/todos.ts` and `apps/api/src/services/todoService.ts`
-- [ ] T073 Document deferred `prod` profile hardening (TLS, secrets backend, external DB) in `docs/prod-profile.md` per plan follow-up F3
-- [ ] T074 Execute every command path in `specs/001-personal-todo-app/quickstart.md` and fix discrepancies in `docker/` or docs
-- [ ] T075 Add `.github/pull_request_template.md` requiring `US#` linkage and checklist for constitution gates at `.github/pull_request_template.md`
-- [ ] T076 [P] Add `package.json` workspace metadata for `@app/e2e` or root Playwright deps so `pnpm run e2e` is reproducible CI-local at `tests/e2e/package.json` (if not hoisted at root)
-- [ ] T077 Ensure OpenAPI file stays in sync: add CI step or script `pnpm run contracts:lint` validating `specs/001-personal-todo-app/contracts/openapi.yaml` in `.github/workflows/ci.yml` or `package.json`
-- [ ] T078 Tag release candidate and verify docker-compose `test` profile runs full CI suite green on a clean machine
+- [x] T065 Create top-level `README.md` with project overview, link to `specs/001-personal-todo-app/quickstart.md`, and BMAD artefact index at repository root
+- [x] T066 Create `docs/architecture.md` mirroring the Architecture overview from `specs/001-personal-todo-app/plan.md` at `docs/architecture.md`
+- [x] T067 Create append-only `docs/ai-mcp-usage-log.md` and record AI/MCP usage for planning and implementation sessions at `docs/ai-mcp-usage-log.md`
+- [x] T068 [P] Write MVP QA summary (test commands, coverage numbers, Playwright list) in `docs/qa/mvp-qa-report.md`
+- [x] T069 [P] Write MVP accessibility review notes (manual checks beyond axe) in `docs/qa/mvp-a11y-review.md`
+- [x] T070 [P] Write MVP security review notes (threats considered, mitigations, `pnpm audit` outcome) in `docs/qa/mvp-security-review.md`
+- [x] T071 Add failing integration tests for `PUT /todos/:id` full replace per OpenAPI in `apps/api/tests/integration/todos.put.test.ts`
+- [x] T072 Implement `PUT /todos/:id` using `TodoReplace` zod schema in `apps/api/src/routes/todos.ts` and `apps/api/src/services/todoService.ts`
+- [x] T073 Document deferred `prod` profile hardening (TLS, secrets backend, external DB) in `docs/prod-profile.md` per plan follow-up F3
+- [x] T074 Execute every command path in `specs/001-personal-todo-app/quickstart.md` and fix discrepancies in `docker/` or docs
+- [x] T075 Add `.github/pull_request_template.md` requiring `US#` linkage and checklist for constitution gates at `.github/pull_request_template.md`
+- [x] T076 [P] Add `package.json` workspace metadata for `@app/e2e` or root Playwright deps so `pnpm run e2e` is reproducible CI-local at `tests/e2e/package.json` (if not hoisted at root)
+- [x] T077 Ensure OpenAPI file stays in sync: add CI step or script `pnpm run contracts:lint` validating `specs/001-personal-todo-app/contracts/openapi.yaml` in `.github/workflows/ci.yml` or `package.json`
+- [x] T078 Tag release candidate and verify docker-compose `test` profile runs full CI suite green on a clean machine
 
 ---
 

@@ -16,6 +16,7 @@ export default tseslint.config(
       "playwright-report/**",
       "test-results/**",
       "**/prettier.config.cjs",
+      "scripts/**/*.mjs",
     ],
   },
   {

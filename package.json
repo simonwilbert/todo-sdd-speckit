@@ -4,7 +4,8 @@
   "type": "module",
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "tests/e2e"
   ],
   "engines": {
     "node": ">=20 <23"
@@ -16,12 +17,12 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "e2e": "bash scripts/run-e2e.sh",
-    "ci": "npm run format:check && npm run lint && npm run typecheck && npm run test"
+    "ci": "npm run format:check && npm run lint && npm run typecheck && npm run test",
+    "contracts:lint": "node scripts/validate-openapi.mjs"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.11.3",
+    "@apidevtools/swagger-parser": "^10.1.1",
     "@eslint/js": "^9.15.0",
-    "@playwright/test": "^1.49.1",
     "eslint": "^9.15.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
