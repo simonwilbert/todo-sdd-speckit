@@ -5,16 +5,20 @@ export type TodoCreateFormProps = {
   onCreate: (text: string) => Promise<void>;
   isSubmitting: boolean;
   serverError?: string | null;
+  /** When set, used for the text field id (e.g. focus from empty-state CTA). */
+  textInputId?: string;
 };
 
 export function TodoCreateForm({
   onCreate,
   isSubmitting,
   serverError,
+  textInputId: textInputIdProp,
 }: TodoCreateFormProps) {
   const [text, setText] = useState("");
   const [localError, setLocalError] = useState<string | null>(null);
-  const fieldId = useId();
+  const generatedFieldId = useId();
+  const fieldId = textInputIdProp ?? generatedFieldId;
   const errorId = useId();
 
   const validationMessage = localError ?? serverError ?? null;

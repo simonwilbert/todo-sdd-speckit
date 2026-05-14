@@ -1,39 +1,75 @@
+import { useEffect, useId, useState } from "react";
+import { QueryErrorBanner } from "../components/QueryErrorBanner.js";
 import { TodoCreateForm } from "../components/TodoCreateForm.js";
+import { TodoEmptyState } from "../components/TodoEmptyState.js";
 import { TodoList } from "../components/TodoList.js";
 import { useCreateTodoMutation, useTodosQuery } from "../services/todoQueries.js";
 
 export function HomePage() {
+  const taskInputId = useId();
   const todosQuery = useTodosQuery();
   const createMutation = useCreateTodoMutation();
+  const [showDelayedListLoading, setShowDelayedListLoading] = useState(false);
 
-  if (todosQuery.isPending) {
-    return <p>Loading tasks…</p>;
-  }
+  useEffect(() => {
+    if (!todosQuery.isPending) {
+      setShowDelayedListLoading(false);
+      return;
+    }
+    const t = window.setTimeout(() => setShowDelayedListLoading(true), 200);
+    return () => window.clearTimeout(t);
+  }, [todosQuery.isPending]);
 
-  if (todosQuery.isError) {
-    return (
-      <section aria-live="polite">
-        <p>Could not load tasks. Check that the API is running and try again.</p>
-      </section>
-    );
-  }
+  const loadErrorMessage =
+    todosQuery.error instanceof Error
+      ? todosQuery.error.message
+      : "Could not load tasks. Check that the API is running and try again.";
 
   const serverError =
     createMutation.isError && createMutation.error instanceof Error
       ? createMutation.error.message
       : null;
 
+  const todos = todosQuery.data ?? [];
+  const listReady = todosQuery.status === "success";
+  const showEmpty = listReady && todos.length === 0;
+  const showTodoList = listReady && todos.length > 0;
+
   return (
     <section aria-labelledby="tasks-heading">
       <h2 id="tasks-heading">Your tasks</h2>
+
+      {todosQuery.isError ? (
+        <QueryErrorBanner
+          message={loadErrorMessage}
+          onRetry={() => void todosQuery.refetch()}
+        />
+      ) : null}
+
       <TodoCreateForm
+        textInputId={taskInputId}
         onCreate={async (t) => {
           await createMutation.mutateAsync(t);
         }}
         isSubmitting={createMutation.isPending}
         serverError={serverError}
       />
-      <TodoList todos={todosQuery.data ?? []} />
+
+      {todosQuery.isPending && showDelayedListLoading ? (
+        <p role="status" className="todo-list-loading" aria-live="polite">
+          Loading your saved tasks…
+        </p>
+      ) : null}
+
+      {showEmpty ? (
+        <TodoEmptyState
+          onAddFirstTask={() => {
+            document.getElementById(taskInputId)?.focus();
+          }}
+        />
+      ) : null}
+
+      {showTodoList ? <TodoList todos={todos} /> : null}
     </section>
   );
 }
