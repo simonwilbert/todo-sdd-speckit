@@ -109,15 +109,15 @@ Per [plan.md](./plan.md): `apps/web/`, `apps/api/`, `packages/shared/`, `tests/e
 
 ### Tests for User Story 2
 
-- [ ] T044 [P] [US2] Add failing API integration tests for `PATCH /todos/:id` toggling `completed` in `apps/api/tests/integration/todos.us2.test.ts`
-- [ ] T045 [P] [US2] Add failing component tests for `TodoItem` toggle a11y + styles in `apps/web/tests/component/TodoItem.us2.test.tsx`
-- [ ] T046 [P] [US2] Add failing Playwright journey in `tests/e2e/journeys/us2.complete-toggle.spec.ts`
+- [x] T044 [P] [US2] Add failing API integration tests for `PATCH /todos/:id` toggling `completed` in `apps/api/tests/integration/todos.us2.test.ts`
+- [x] T045 [P] [US2] Add failing component tests for `TodoItem` toggle a11y + styles in `apps/web/tests/component/TodoItem.us2.test.tsx`
+- [x] T046 [P] [US2] Add failing Playwright journey in `tests/e2e/journeys/us2.complete-toggle.spec.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T047 [US2] Extend `todoService` with `updateTodoPatch` in `apps/api/src/services/todoService.ts`
-- [ ] T048 [US2] Implement `PATCH /todos/:id` in `apps/api/src/routes/todos.ts` with partial zod schema
-- [ ] T049 [US2] Add `useToggleTodoMutation` and wire `TodoItem` checkbox in `apps/web/src/components/TodoItem.tsx` (used from `TodoList.tsx`)
+- [x] T047 [US2] Extend `todoService` with `updateTodoPatch` in `apps/api/src/services/todoService.ts`
+- [x] T048 [US2] Implement `PATCH /todos/:id` in `apps/api/src/routes/todos.ts` with partial zod schema
+- [x] T049 [US2] Add `useToggleTodoMutation` and wire `TodoItem` checkbox in `apps/web/src/components/TodoItem.tsx` (used from `TodoList.tsx`)
 
 **Checkpoint**: US2 acceptance scenarios pass; T044–T046 GREEN.
 

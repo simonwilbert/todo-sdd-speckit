@@ -17,6 +17,13 @@ function mockPrisma(): PrismaClient {
         createdAt: new Date("2025-01-01T00:00:00.000Z"),
         updatedAt: new Date("2025-01-01T00:00:00.000Z"),
       }),
+      update: vi.fn().mockResolvedValue({
+        id: "00000000-0000-4000-8000-000000000001",
+        text: "mock",
+        completed: true,
+        createdAt: new Date("2025-01-01T00:00:00.000Z"),
+        updatedAt: new Date("2025-06-03T12:00:00.000Z"),
+      }),
     },
   } as unknown as PrismaClient;
 }
@@ -97,5 +104,15 @@ describe("createApp (mocked prisma)", () => {
     const res = await request(app).post("/todos").send({ text: "   " });
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe("validation_failed");
+  });
+
+  it("PATCH /todos/:id updates completed", async () => {
+    const app = createApp(mockPrisma());
+    const res = await request(app)
+      .patch("/todos/00000000-0000-4000-8000-000000000001")
+      .send({ completed: true });
+    expect(res.status).toBe(200);
+    expect(res.body.completed).toBe(true);
+    expect(res.body.text).toBe("mock");
   });
 });

@@ -1,12 +1,14 @@
-import { todoCreateSchema } from "@todo/shared";
+import { todoCreateSchema, todoIdParamSchema, todoPatchSchema } from "@todo/shared";
 import type { PrismaClient } from "@prisma/client";
+import type { Request } from "express";
 import { Router } from "express";
-import { validateBody } from "../middleware/validate.js";
+import { validateBody, validateParams } from "../middleware/validate.js";
 import * as todoService from "../services/todoService.js";
 
+type ParamsId = Request & { validatedParams: { id: string } };
+
 /**
- * REST `/todos` router. PATCH/PUT/DELETE are implemented in later user-story
- * tasks; list + create are wired here so the stack is usable after Foundational.
+ * REST `/todos` router. PUT/DELETE follow in later user-story tasks.
  */
 export function createTodosRouter(prisma: PrismaClient) {
   const r = Router();
@@ -29,6 +31,22 @@ export function createTodosRouter(prisma: PrismaClient) {
       next(e);
     }
   });
+
+  r.patch(
+    "/:id",
+    validateParams(todoIdParamSchema),
+    validateBody(todoPatchSchema),
+    async (req, res, next) => {
+      try {
+        const { id } = (req as ParamsId).validatedParams;
+        const body = req.body as { text?: string; completed?: boolean };
+        const todo = await todoService.updateTodoPatch(prisma, id, body);
+        res.json(todo);
+      } catch (e) {
+        next(e);
+      }
+    },
+  );
 
   return r;
 }
