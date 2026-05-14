@@ -173,14 +173,14 @@ Per [plan.md](./plan.md): `apps/web/`, `apps/api/`, `packages/shared/`, `tests/e
 
 ### Tests for User Story 5
 
-- [ ] T060 [P] [US5] Add Playwright + `@axe-core/playwright` helper in `tests/e2e/helpers/a11y.ts`
-- [ ] T061 [P] [US5] Add failing Playwright journey covering mobile + desktop widths + axe assertions in `tests/e2e/journeys/us5.responsive-a11y.spec.ts`
+- [x] T060 [P] [US5] Add Playwright + `@axe-core/playwright` helper in `tests/e2e/helpers/a11y.ts`
+- [x] T061 [P] [US5] Add failing Playwright journey covering mobile + desktop widths + axe assertions in `tests/e2e/journeys/us5.responsive-a11y.spec.ts`
 
 ### Implementation for User Story 5
 
-- [ ] T062 [US5] Add responsive layout, landmarks (`main`, labels), and focus-visible styles in `apps/web/src/App.tsx` and `apps/web/src/styles/layout.css`
-- [ ] T063 [US5] Add security headers middleware (CSP, HSTS-ready shape, `X-Content-Type-Options`) in `apps/api/src/middleware/securityHeaders.ts` and register in `apps/api/src/server.ts`
-- [ ] T064 [US5] Audit and fix focus order / live regions for create, toggle, delete, undo in `apps/web/src/components/TodoCreateForm.tsx` and `apps/web/src/components/TodoItem.tsx`
+- [x] T062 [US5] Add responsive layout, landmarks (`main`, labels), and focus-visible styles in `apps/web/src/App.tsx` and `apps/web/src/styles/layout.css`
+- [x] T063 [US5] Add security headers middleware (CSP, HSTS-ready shape, `X-Content-Type-Options`) in `apps/api/src/middleware/securityHeaders.ts` and register in `apps/api/src/server.ts`
+- [x] T064 [US5] Audit and fix focus order / live regions for create, toggle, delete, undo in `apps/web/src/components/TodoCreateForm.tsx` and `apps/web/src/components/TodoItem.tsx`
 
 **Checkpoint**: US5 acceptance scenarios pass; T061 GREEN with axe thresholds from [spec.md](./spec.md) SC-005.
 

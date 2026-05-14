@@ -16,6 +16,25 @@ describe("securityHeaders", () => {
     });
     expect(nextCalled).toBe(true);
     expect(headers["X-Content-Type-Options"]).toBe("nosniff");
+    expect(headers["Permissions-Policy"]).toContain("geolocation=()");
+  });
+
+  it("sets Strict-Transport-Security when ENABLE_HSTS=true", () => {
+    const prev = process.env.ENABLE_HSTS;
+    process.env.ENABLE_HSTS = "true";
+    try {
+      const headers: Record<string, string> = {};
+      const res = {
+        setHeader(k: string, v: string) {
+          headers[k] = v;
+        },
+      } as unknown as Response;
+      securityHeaders({} as Request, res, () => {});
+      expect(headers["Strict-Transport-Security"]).toContain("max-age=");
+    } finally {
+      if (prev === undefined) delete process.env.ENABLE_HSTS;
+      else process.env.ENABLE_HSTS = prev;
+    }
   });
 
   it("uses Content-Security-Policy-Report-Only when CSP_REPORT_ONLY=true", () => {

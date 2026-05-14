@@ -20,6 +20,8 @@ export function TodoCreateForm({
   const generatedFieldId = useId();
   const fieldId = textInputIdProp ?? generatedFieldId;
   const errorId = useId();
+  const addedLiveId = useId();
+  const [addedAnnouncement, setAddedAnnouncement] = useState("");
 
   const validationMessage = localError ?? serverError ?? null;
 
@@ -38,6 +40,8 @@ export function TodoCreateForm({
     try {
       await onCreate(trimmed);
       setText("");
+      setAddedAnnouncement(`Task added: ${trimmed}`);
+      window.setTimeout(() => setAddedAnnouncement(""), 4000);
     } catch {
       /* mutation / request errors surface via serverError */
     }
@@ -73,6 +77,9 @@ export function TodoCreateForm({
           {validationMessage}
         </p>
       ) : null}
+      <p id={addedLiveId} className="sr-only" aria-live="polite" aria-atomic="true">
+        {addedAnnouncement}
+      </p>
     </form>
   );
 }
