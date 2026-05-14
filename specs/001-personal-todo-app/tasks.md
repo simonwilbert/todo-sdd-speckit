@@ -1,5 +1,4 @@
 ---
-
 description: "Task list for Personal Todo App (001-personal-todo-app)"
 ---
 
@@ -285,18 +284,18 @@ pnpm exec playwright test tests/e2e/journeys/us1.capture-revisit.spec.ts
 
 ## Task Summary
 
-| Metric | Value |
-|--------|------:|
-| **Total tasks** | 78 |
-| **Phase 1 (Setup)** | 11 |
-| **Phase 2 (Foundational)** | 23 |
-| **US1** | 9 |
-| **US2** | 6 |
-| **US3** | 5 |
-| **US4** | 5 |
-| **US5** | 5 |
-| **Phase 8 (Polish)** | 14 |
-| **Parallel `[P]` tasks** | 28 |
+| Metric                     | Value |
+| -------------------------- | ----: |
+| **Total tasks**            |    78 |
+| **Phase 1 (Setup)**        |    11 |
+| **Phase 2 (Foundational)** |    23 |
+| **US1**                    |     9 |
+| **US2**                    |     6 |
+| **US3**                    |     5 |
+| **US4**                    |     5 |
+| **US5**                    |     5 |
+| **Phase 8 (Polish)**       |    14 |
+| **Parallel `[P]` tasks**   |    28 |
 
 **Suggested MVP scope**: Complete through **T043** (Phases 1–3) then stop for a demo; constitution requires completing through at least **T061** before calling the feature release-ready.
 

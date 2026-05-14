@@ -22,13 +22,13 @@ for the conceptual definition; this section is the schema-level projection.
 
 #### Fields
 
-| Field         | Type                       | Required | Default          | Notes |
-|---------------|----------------------------|----------|------------------|-------|
-| `id`          | `uuid` (v4)                | yes      | generated server-side | Stable identity. Never reused. Returned to clients as the canonical handle. |
-| `text`        | `string` (1 – 500 chars, after trim) | yes | — | The user-supplied task text. Trimmed on the server. Must not be empty after trim (FR-001, FR-012). |
-| `completed`   | `boolean`                  | yes      | `false`          | Toggle state for US2. Reversible. |
-| `createdAt`   | `timestamptz`              | yes      | `now()`          | Used for ordering (newest first by default) and audit. Immutable after creation. |
-| `updatedAt`   | `timestamptz`              | yes      | `now()` on insert and on every mutation | Used for reconciliation across parallel sessions (spec edge case "user opens the app two or more times in parallel"). |
+| Field       | Type                                 | Required | Default                                 | Notes                                                                                                                 |
+| ----------- | ------------------------------------ | -------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `id`        | `uuid` (v4)                          | yes      | generated server-side                   | Stable identity. Never reused. Returned to clients as the canonical handle.                                           |
+| `text`      | `string` (1 – 500 chars, after trim) | yes      | —                                       | The user-supplied task text. Trimmed on the server. Must not be empty after trim (FR-001, FR-012).                    |
+| `completed` | `boolean`                            | yes      | `false`                                 | Toggle state for US2. Reversible.                                                                                     |
+| `createdAt` | `timestamptz`                        | yes      | `now()`                                 | Used for ordering (newest first by default) and audit. Immutable after creation.                                      |
+| `updatedAt` | `timestamptz`                        | yes      | `now()` on insert and on every mutation | Used for reconciliation across parallel sessions (spec edge case "user opens the app two or more times in parallel"). |
 
 #### Validation rules
 
@@ -113,6 +113,7 @@ model Todo {
 ```
 
 Notes:
+
 - `@db.VarChar(500)` enforces the 500-char ceiling at the DB layer as
   defence-in-depth; zod still validates first so the response is a
   structured `400` rather than a generic DB error.
@@ -140,13 +141,13 @@ us into a corner (per spec §"Key Entities").
 
 ## Mapping to FRs and acceptance criteria
 
-| FR / SC | Mechanism in the data model |
-|---------|------------------------------|
-| FR-001, FR-012 (text validation, no silent truncation) | zod schema in `packages/shared` + `VarChar(500)` in Postgres |
-| FR-002 (display tasks) | `Todo` rows ordered by `createdAt DESC` via index |
-| FR-003 (toggle complete) | `completed` boolean, mutable via PATCH |
-| FR-004 (delete + undo) | DB DELETE on undo expiry; "pending-undo" is UI-only |
-| FR-005 (persist across sessions) | Postgres with persistent volume in `dev` profile |
-| FR-013 (escape user content) | `text` stored as text; rendered as text only on the frontend; no HTML interpolation |
-| US2 AC-3 (completion survives reload) | `completed` is persisted, not client-only |
-| Edge case (parallel sessions) | `updatedAt` enables last-writer-wins reconciliation on reload |
+| FR / SC                                                | Mechanism in the data model                                                         |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| FR-001, FR-012 (text validation, no silent truncation) | zod schema in `packages/shared` + `VarChar(500)` in Postgres                        |
+| FR-002 (display tasks)                                 | `Todo` rows ordered by `createdAt DESC` via index                                   |
+| FR-003 (toggle complete)                               | `completed` boolean, mutable via PATCH                                              |
+| FR-004 (delete + undo)                                 | DB DELETE on undo expiry; "pending-undo" is UI-only                                 |
+| FR-005 (persist across sessions)                       | Postgres with persistent volume in `dev` profile                                    |
+| FR-013 (escape user content)                           | `text` stored as text; rendered as text only on the frontend; no HTML interpolation |
+| US2 AC-3 (completion survives reload)                  | `completed` is persisted, not client-only                                           |
+| Edge case (parallel sessions)                          | `updatedAt` enables last-writer-wins reconciliation on reload                       |

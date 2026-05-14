@@ -31,8 +31,8 @@ docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml up 
 This starts three containers:
 
 - `postgres` (Postgres 16, persistent volume `todo_pgdata_dev`)
-- `api`     (Express + Prisma; runs `prisma migrate deploy` on start)
-- `web`     (Vite dev server)
+- `api` (Express + Prisma; runs `prisma migrate deploy` on start)
+- `web` (Vite dev server)
 
 All three declare healthchecks. Wait until `docker compose ps` reports all
 three as `healthy` — typically 10–30 s on first start (Postgres warms its
@@ -86,13 +86,13 @@ docker compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml do
 
 Each journey file maps 1:1 to a user story:
 
-| Spec file                                  | User story | Spec acceptance scenarios covered |
-|--------------------------------------------|------------|------------------------------------|
-| `tests/e2e/journeys/us1.capture-revisit.spec.ts` | US1 (P1) | AC1–AC4 |
-| `tests/e2e/journeys/us2.complete-toggle.spec.ts` | US2 (P2) | AC1–AC4 |
-| `tests/e2e/journeys/us3.delete-undo.spec.ts`     | US3 (P2) | AC1–AC4 |
-| `tests/e2e/journeys/us4.empty-loading-error.spec.ts` | US4 (P3) | AC1–AC4 |
-| `tests/e2e/journeys/us5.responsive-a11y.spec.ts` | US5 (P3) | AC1–AC4 (axe-core scan included) |
+| Spec file                                            | User story | Spec acceptance scenarios covered |
+| ---------------------------------------------------- | ---------- | --------------------------------- |
+| `tests/e2e/journeys/us1.capture-revisit.spec.ts`     | US1 (P1)   | AC1–AC4                           |
+| `tests/e2e/journeys/us2.complete-toggle.spec.ts`     | US2 (P2)   | AC1–AC4                           |
+| `tests/e2e/journeys/us3.delete-undo.spec.ts`         | US3 (P2)   | AC1–AC4                           |
+| `tests/e2e/journeys/us4.empty-loading-error.spec.ts` | US4 (P3)   | AC1–AC4                           |
+| `tests/e2e/journeys/us5.responsive-a11y.spec.ts`     | US5 (P3)   | AC1–AC4 (axe-core scan included)  |
 
 ### Accessibility (axe-core)
 
@@ -128,23 +128,23 @@ Plus, per Principle V on every release:
 
 ## 6. Where things live
 
-| Concern | Location |
-|---------|----------|
-| Wire types & zod schemas | `packages/shared/src/` |
-| API routes & error envelope | `apps/api/src/routes/`, `apps/api/src/middleware/` |
-| Prisma schema & migrations | `apps/api/prisma/` |
-| React components & React Query hooks | `apps/web/src/components/`, `apps/web/src/services/` |
-| E2E journeys | `tests/e2e/journeys/` |
-| Container assets | `docker/` |
-| BMAD artefacts | `specs/001-personal-todo-app/` (spec, plan, research, data-model, contracts, quickstart, checklists) and `docs/architecture.md` (mirrored from `plan.md`) |
-| QA reports | `docs/qa/` |
-| AI / MCP usage log | `docs/ai-mcp-usage-log.md` |
+| Concern                              | Location                                                                                                                                                  |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Wire types & zod schemas             | `packages/shared/src/`                                                                                                                                    |
+| API routes & error envelope          | `apps/api/src/routes/`, `apps/api/src/middleware/`                                                                                                        |
+| Prisma schema & migrations           | `apps/api/prisma/`                                                                                                                                        |
+| React components & React Query hooks | `apps/web/src/components/`, `apps/web/src/services/`                                                                                                      |
+| E2E journeys                         | `tests/e2e/journeys/`                                                                                                                                     |
+| Container assets                     | `docker/`                                                                                                                                                 |
+| BMAD artefacts                       | `specs/001-personal-todo-app/` (spec, plan, research, data-model, contracts, quickstart, checklists) and `docs/architecture.md` (mirrored from `plan.md`) |
+| QA reports                           | `docs/qa/`                                                                                                                                                |
+| AI / MCP usage log                   | `docs/ai-mcp-usage-log.md`                                                                                                                                |
 
 ## Troubleshooting
 
 - **`api` healthcheck never goes green** — usually Postgres isn't ready yet.
   `docker compose logs postgres` should show `database system is ready to
-  accept connections`. The API's startup waits for this, then runs
+accept connections`. The API's startup waits for this, then runs
   `prisma migrate deploy`.
 - **Playwright cannot reach the app** — verify
   `docker compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml ps`
