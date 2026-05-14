@@ -1,0 +1,12 @@
+node_modules
+.git
+.github
+**/*.md
+**/coverage
+**/.env*
+!**/.env.example
+dist
+.pnpm-store
+specs
+.cursor
+.specify

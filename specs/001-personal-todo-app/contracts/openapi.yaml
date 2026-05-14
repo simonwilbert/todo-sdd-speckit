@@ -1,0 +1,353 @@
+openapi: 3.1.0
+info:
+  title: Personal Todo App API
+  version: 0.1.0
+  description: |
+    REST contract for the Personal Todo App MVP (feature 001-personal-todo-app).
+
+    - Single resource: `Todo`. See `../data-model.md` for the canonical schema.
+    - All requests and responses are `application/json; charset=utf-8`.
+    - Errors use a single envelope (`Error`) with a stable machine-readable
+      `code` and a human-readable `message`.
+    - The wire shape is mirrored 1:1 in `packages/shared/src/todo.ts` and
+      `packages/shared/src/api.ts` so the frontend and backend cannot drift.
+
+servers:
+  - url: http://localhost:3000
+    description: Local `dev` profile (docker-compose)
+  - url: http://api:3000
+    description: In-network address used by the `web` container in compose
+
+tags:
+  - name: todos
+    description: CRUD operations on todo items
+  - name: ops
+    description: Operational endpoints (health, readiness)
+
+paths:
+  /health:
+    get:
+      tags: [ops]
+      operationId: getHealth
+      summary: Liveness + readiness probe
+      description: |
+        Returns `200` with `status: "ok"` once the API process is up and the
+        database is reachable. Used by docker-compose's healthcheck.
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+        "503":
+          description: Service is up but a dependency (e.g., Postgres) is not ready
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /todos:
+    get:
+      tags: [todos]
+      operationId: listTodos
+      summary: List all todos for the local user
+      description: Returns every todo, newest first (by `createdAt DESC`).
+      responses:
+        "200":
+          description: The full list of todos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Todo"
+        "503":
+          description: Persistence is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    post:
+      tags: [todos]
+      operationId: createTodo
+      summary: Create a new todo
+      description: |
+        Creates a new todo from the supplied `text`. The server assigns
+        `id`, `createdAt`, and `updatedAt`. `completed` defaults to `false`
+        and MUST NOT be supplied by the client.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoCreate"
+            examples:
+              minimal:
+                value: { text: "Buy milk" }
+      responses:
+        "201":
+          description: Todo created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        "400":
+          description: Invalid request (empty / whitespace text, length > 500, unexpected fields, etc.)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "503":
+          description: Persistence is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /todos/{id}:
+    parameters:
+      - $ref: "#/components/parameters/TodoId"
+
+    patch:
+      tags: [todos]
+      operationId: patchTodo
+      summary: Partially update a todo
+      description: |
+        Updates one or more mutable fields of an existing todo. Any field
+        not present in the request body is left unchanged. The server
+        refreshes `updatedAt` on success.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoPatch"
+            examples:
+              toggleComplete:
+                value: { completed: true }
+              renameTask:
+                value: { text: "Buy oat milk" }
+      responses:
+        "200":
+          description: Todo updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        "400":
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: No todo with this `id` exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "503":
+          description: Persistence is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    put:
+      tags: [todos]
+      operationId: replaceTodo
+      summary: Replace an existing todo
+      description: |
+        Replaces every mutable field of an existing todo. Both `text` and
+        `completed` are required. The server refreshes `updatedAt`.
+        `PUT` is intentionally redundant with `PATCH` for the MVP; it is
+        included because the user input explicitly required both verbs.
+        Implementations MAY route `PUT` to the same handler as `PATCH`
+        with stricter required-field validation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoReplace"
+            examples:
+              full:
+                value: { text: "Buy oat milk", completed: true }
+      responses:
+        "200":
+          description: Todo replaced
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        "400":
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: No todo with this `id` exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "503":
+          description: Persistence is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    delete:
+      tags: [todos]
+      operationId: deleteTodo
+      summary: Delete a todo
+      description: |
+        Permanently removes a todo. The short undo affordance from US3 is
+        a UI-level concern; this endpoint does not implement a server-side
+        trash. Idempotent: deleting an already-deleted todo returns `404`.
+      responses:
+        "204":
+          description: Todo deleted
+        "400":
+          description: Invalid `id` in path (not a UUID)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: No todo with this `id` exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "503":
+          description: Persistence is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  parameters:
+    TodoId:
+      name: id
+      in: path
+      required: true
+      description: UUID v4 of the todo
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    Health:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        version:
+          type: string
+          description: The build / image tag of the running API (informational).
+
+    Todo:
+      type: object
+      additionalProperties: false
+      required: [id, text, completed, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Stable server-assigned identity.
+        text:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: User-supplied task text (already trimmed by the server).
+        completed:
+          type: boolean
+          description: Completion state. Reversible.
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp. Server-assigned, immutable.
+        updatedAt:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp. Refreshed on every mutation.
+
+    TodoCreate:
+      type: object
+      additionalProperties: false
+      required: [text]
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 500
+
+    TodoPatch:
+      type: object
+      additionalProperties: false
+      description: At least one of `text` or `completed` MUST be present.
+      minProperties: 1
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 500
+        completed:
+          type: boolean
+
+    TodoReplace:
+      type: object
+      additionalProperties: false
+      required: [text, completed]
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 500
+        completed:
+          type: boolean
+
+    Error:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              description: |
+                Stable, machine-readable error code. Examples:
+                  - `validation_failed`
+                  - `not_found`
+                  - `unsupported_field`
+                  - `persistence_unavailable`
+                  - `internal_error`
+              enum:
+                - validation_failed
+                - not_found
+                - unsupported_field
+                - persistence_unavailable
+                - internal_error
+            message:
+              type: string
+              description: Human-readable message safe to surface in the UI.
+            details:
+              type: object
+              additionalProperties: true
+              description: |
+                Optional structured context. For `validation_failed`, this
+                SHOULD include `fields`, a map of field name to a short
+                explanation (e.g., `{ "text": "must be 1-500 characters" }`).
