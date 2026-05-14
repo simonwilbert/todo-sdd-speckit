@@ -1,37 +1,101 @@
-import { expect, test, type Page, type Route } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
-function normalizePathname(pathname: string): string {
-  return pathname.replace(/\/+$/, "") || "/";
+/** Patch list GET /todos before app loads (works with any host:port and Vite proxy). */
+async function mockListTodosEmpty(page: Page) {
+  await page.addInitScript(() => {
+    const orig = window.fetch.bind(window);
+    window.fetch = async (input, init) => {
+      const u =
+        typeof input === "string"
+          ? input
+          : input instanceof Request
+            ? input.url
+            : input.href;
+      const method =
+        init?.method ??
+        (typeof input !== "string" && input instanceof Request ? input.method : "GET");
+      const url = new URL(u, window.location.origin);
+      const path = url.pathname.replace(/\/+$/, "") || "/";
+      if (method === "GET" && path === "/todos") {
+        return new Response("[]", {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      return orig(input, init);
+    };
+  });
 }
 
-async function stubTodosGet(page: Page, handler: (route: Route) => void | Promise<void>) {
-  await page.context().route(
-    (url) => normalizePathname(url.pathname) === "/todos",
-    async (route) => {
-      if (route.request().method() !== "GET") {
-        await route.continue();
-        return;
+async function mockListTodosDelayedEmpty(page: Page, delayMs: number) {
+  await page.addInitScript((ms) => {
+    const orig = window.fetch.bind(window);
+    window.fetch = async (input, init) => {
+      const u =
+        typeof input === "string"
+          ? input
+          : input instanceof Request
+            ? input.url
+            : input.href;
+      const method =
+        init?.method ??
+        (typeof input !== "string" && input instanceof Request ? input.method : "GET");
+      const url = new URL(u, window.location.origin);
+      const path = url.pathname.replace(/\/+$/, "") || "/";
+      if (method === "GET" && path === "/todos") {
+        await new Promise((r) => setTimeout(r, ms));
+        return new Response("[]", {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
       }
-      await handler(route);
-    },
-  );
+      return orig(input, init);
+    };
+  }, delayMs);
+}
+
+async function mockListTodosFailThenEmpty(page: Page) {
+  await page.addInitScript(() => {
+    let n = 0;
+    const orig = window.fetch.bind(window);
+    window.fetch = async (input, init) => {
+      const u =
+        typeof input === "string"
+          ? input
+          : input instanceof Request
+            ? input.url
+            : input.href;
+      const method =
+        init?.method ??
+        (typeof input !== "string" && input instanceof Request ? input.method : "GET");
+      const url = new URL(u, window.location.origin);
+      const path = url.pathname.replace(/\/+$/, "") || "/";
+      if (method === "GET" && path === "/todos") {
+        n += 1;
+        if (n <= 2) {
+          return new Response(
+            JSON.stringify({ error: { message: "Persistence unavailable" } }),
+            {
+              status: 503,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+        return new Response("[]", {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      return orig(input, init);
+    };
+  });
 }
 
 test.describe("US4 — empty, loading, and error states", () => {
-  test.afterEach(async ({ context }) => {
-    await context.unrouteAll({ behavior: "ignoreErrors" });
-  });
-
   test("empty list shows empty state and CTA focuses new-task field", async ({
     page,
   }) => {
-    await stubTodosGet(page, async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: "[]",
-      });
-    });
+    await mockListTodosEmpty(page);
 
     await page.goto("/");
     await expect(page.getByRole("heading", { name: /no tasks yet/i })).toBeVisible({
@@ -42,14 +106,7 @@ test.describe("US4 — empty, loading, and error states", () => {
   });
 
   test("slow list load shows loading message after 200 ms", async ({ page }) => {
-    await stubTodosGet(page, async (route) => {
-      await new Promise((r) => setTimeout(r, 800));
-      await route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: "[]",
-      });
-    });
+    await mockListTodosDelayedEmpty(page, 800);
 
     await page.goto("/");
     await expect(page.getByText(/loading your saved tasks/i)).toBeVisible({
@@ -61,23 +118,7 @@ test.describe("US4 — empty, loading, and error states", () => {
   });
 
   test("list error shows alert and Retry loads empty state", async ({ page }) => {
-    let getCount = 0;
-    await stubTodosGet(page, async (route) => {
-      getCount += 1;
-      if (getCount === 1) {
-        await route.fulfill({
-          status: 503,
-          contentType: "application/json",
-          body: JSON.stringify({ error: { message: "Persistence unavailable" } }),
-        });
-        return;
-      }
-      await route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: "[]",
-      });
-    });
+    await mockListTodosFailThenEmpty(page);
 
     await page.goto("/");
     await expect(page.getByRole("alert")).toBeVisible({ timeout: 60_000 });

@@ -152,14 +152,14 @@ Per [plan.md](./plan.md): `apps/web/`, `apps/api/`, `packages/shared/`, `tests/e
 
 ### Tests for User Story 4
 
-- [ ] T055 [P] [US4] Add failing component tests for empty / pending / error UI branches in `apps/web/tests/component/TodoPageStates.us4.test.tsx`
-- [ ] T056 [P] [US4] Add failing Playwright journey in `tests/e2e/journeys/us4.empty-loading-error.spec.ts`
+- [x] T055 [P] [US4] Add failing component tests for empty / pending / error UI branches in `apps/web/tests/component/TodoPageStates.us4.test.tsx`
+- [x] T056 [P] [US4] Add failing Playwright journey in `tests/e2e/journeys/us4.empty-loading-error.spec.ts`
 
 ### Implementation for User Story 4
 
-- [ ] T057 [US4] Implement `TodoEmptyState` component in `apps/web/src/components/TodoEmptyState.tsx`
-- [ ] T058 [US4] Wire React Query `isPending` / `isError` / `refetch` states in `apps/web/src/pages/HomePage.tsx`
-- [ ] T059 [US4] Implement `QueryErrorBanner` with retry action in `apps/web/src/components/QueryErrorBanner.tsx`
+- [x] T057 [US4] Implement `TodoEmptyState` component in `apps/web/src/components/TodoEmptyState.tsx`
+- [x] T058 [US4] Wire React Query `isPending` / `isError` / `refetch` states in `apps/web/src/pages/HomePage.tsx`
+- [x] T059 [US4] Implement `QueryErrorBanner` with retry action in `apps/web/src/components/QueryErrorBanner.tsx`
 
 **Checkpoint**: US4 acceptance scenarios pass; T055–T056 GREEN.
 
