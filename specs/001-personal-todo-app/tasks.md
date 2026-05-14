@@ -84,18 +84,18 @@ Per [plan.md](./plan.md): `apps/web/`, `apps/api/`, `packages/shared/`, `tests/e
 
 ### Tests for User Story 1 (write first; confirm RED where TDD applies)
 
-- [ ] T035 [P] [US1] Add failing API integration tests for `GET /todos` (empty) and `POST /todos` + persistence in `apps/api/tests/integration/todos.us1.test.ts`
-- [ ] T036 [P] [US1] Add failing component tests for `TodoCreateForm` validation (empty / whitespace / max length) in `apps/web/tests/component/TodoCreateForm.us1.test.tsx`
-- [ ] T037 [P] [US1] Add failing Playwright journey in `tests/e2e/journeys/us1.capture-revisit.spec.ts` per `specs/001-personal-todo-app/quickstart.md`
+- [x] T035 [P] [US1] Add failing API integration tests for `GET /todos` (empty) and `POST /todos` + persistence in `apps/api/tests/integration/todos.us1.test.ts`
+- [x] T036 [P] [US1] Add failing component tests for `TodoCreateForm` validation (empty / whitespace / max length) in `apps/web/tests/component/TodoCreateForm.us1.test.tsx`
+- [x] T037 [P] [US1] Add failing Playwright journey in `tests/e2e/journeys/us1.capture-revisit.spec.ts` per `specs/001-personal-todo-app/quickstart.md`
 
 ### Implementation for User Story 1
 
-- [ ] T038 [US1] Implement `listTodos` and `createTodo` in `apps/api/src/services/todoService.ts` using Prisma
-- [ ] T039 [US1] Implement `GET /todos` and `POST /todos` with zod validation and ordering (`createdAt DESC`) in `apps/api/src/routes/todos.ts`
-- [ ] T040 [US1] Implement typed `fetch` API client in `apps/web/src/services/apiClient.ts` using `import.meta.env.VITE_API_URL`
-- [ ] T041 [US1] Implement React Query hooks `useTodosQuery` and `useCreateTodoMutation` in `apps/web/src/services/todoQueries.ts`
-- [ ] T042 [US1] Build `TodoCreateForm` and `TodoList` in `apps/web/src/components/TodoCreateForm.tsx` and `apps/web/src/components/TodoList.tsx`
-- [ ] T043 [US1] Compose `HomePage` in `apps/web/src/pages/HomePage.tsx` and wire `App.tsx` + `main.tsx` in `apps/web/src/App.tsx` and `apps/web/src/main.tsx`
+- [x] T038 [US1] Implement `listTodos` and `createTodo` in `apps/api/src/services/todoService.ts` using Prisma
+- [x] T039 [US1] Implement `GET /todos` and `POST /todos` with zod validation and ordering (`createdAt DESC`) in `apps/api/src/routes/todos.ts`
+- [x] T040 [US1] Implement typed `fetch` API client in `apps/web/src/services/apiClient.ts` using `import.meta.env.VITE_API_URL`
+- [x] T041 [US1] Implement React Query hooks `useTodosQuery` and `useCreateTodoMutation` in `apps/web/src/services/todoQueries.ts`
+- [x] T042 [US1] Build `TodoCreateForm` and `TodoList` in `apps/web/src/components/TodoCreateForm.tsx` and `apps/web/src/components/TodoList.tsx`
+- [x] T043 [US1] Compose `HomePage` in `apps/web/src/pages/HomePage.tsx` and wire `App.tsx` + `main.tsx` in `apps/web/src/App.tsx` and `apps/web/src/main.tsx`
 
 **Checkpoint**: US1 acceptance scenarios 1–4 in [spec.md](./spec.md) pass manually; T035–T037 tests GREEN.
 

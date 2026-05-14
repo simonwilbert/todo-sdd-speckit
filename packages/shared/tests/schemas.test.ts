@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  TODO_TEXT_MAX_LENGTH,
   todoCreateSchema,
   todoPatchSchema,
   todoReplaceSchema,
@@ -14,6 +15,12 @@ describe("todoCreateSchema", () => {
 
   it("rejects empty after trim", () => {
     expect(() => todoCreateSchema.parse({ text: "   " })).toThrow();
+  });
+
+  it("rejects text over max length", () => {
+    expect(() =>
+      todoCreateSchema.parse({ text: "a".repeat(TODO_TEXT_MAX_LENGTH + 1) }),
+    ).toThrow();
   });
 });
 

@@ -2,7 +2,7 @@ import { todoCreateSchema } from "@todo/shared";
 import type { PrismaClient } from "@prisma/client";
 import { Router } from "express";
 import { validateBody } from "../middleware/validate.js";
-import { serializeTodo } from "../util/serializeTodo.js";
+import * as todoService from "../services/todoService.js";
 
 /**
  * REST `/todos` router. PATCH/PUT/DELETE are implemented in later user-story
@@ -13,8 +13,8 @@ export function createTodosRouter(prisma: PrismaClient) {
 
   r.get("/", async (_req, res, next) => {
     try {
-      const rows = await prisma.todo.findMany({ orderBy: { createdAt: "desc" } });
-      res.json(rows.map(serializeTodo));
+      const todos = await todoService.listTodos(prisma);
+      res.json(todos);
     } catch (e) {
       next(e);
     }
@@ -23,8 +23,8 @@ export function createTodosRouter(prisma: PrismaClient) {
   r.post("/", validateBody(todoCreateSchema), async (req, res, next) => {
     try {
       const { text } = req.body as { text: string };
-      const row = await prisma.todo.create({ data: { text } });
-      res.status(201).json(serializeTodo(row));
+      const todo = await todoService.createTodo(prisma, text);
+      res.status(201).json(todo);
     } catch (e) {
       next(e);
     }

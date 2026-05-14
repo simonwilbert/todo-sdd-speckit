@@ -10,11 +10,12 @@
     "node": ">=20 <23"
   },
   "scripts": {
+    "postinstall": "npm run build -w @todo/shared",
     "lint": "eslint .",
     "format:check": "prettier . --check",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "e2e": "playwright test -c tests/e2e/playwright.config.ts",
+    "e2e": "bash scripts/run-e2e.sh",
     "ci": "npm run format:check && npm run lint && npm run typecheck && npm run test"
   },
   "devDependencies": {

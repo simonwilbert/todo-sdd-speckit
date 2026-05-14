@@ -1,9 +1,12 @@
 import { z } from "zod";
 
+/** Maximum length for todo `text` (wire + UI). */
+export const TODO_TEXT_MAX_LENGTH = 500;
+
 const trimmedText = z
   .string()
   .transform((s) => s.trim())
-  .pipe(z.string().min(1).max(500));
+  .pipe(z.string().min(1).max(TODO_TEXT_MAX_LENGTH));
 
 export const errorCodeSchema = z.enum([
   "validation_failed",
@@ -42,7 +45,7 @@ export const todoIdParamSchema = z.object({
 
 export const todoSchema = z.object({
   id: z.string().uuid(),
-  text: z.string().min(1).max(500),
+  text: z.string().min(1).max(TODO_TEXT_MAX_LENGTH),
   completed: z.boolean(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
