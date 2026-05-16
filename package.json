@@ -17,10 +17,15 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "e2e": "bash scripts/run-e2e.sh",
+    "perf": "npm run playwright -w @todo/e2e -- journeys/performance.spec.ts --project=chromium-mobile",
+    "perf:lighthouse": "node scripts/run-lighthouse.mjs",
+    "a11y": "npm run test:a11y -w @todo/web && env -u DATABASE_URL npm run playwright -w @todo/e2e -- journeys/a11y-primary-screens.spec.ts --project=chromium-desktop",
     "ci": "npm run format:check && npm run lint && npm run typecheck && npm run test",
     "contracts:lint": "node scripts/validate-openapi.mjs"
   },
   "devDependencies": {
+    "chrome-launcher": "^1.1.2",
+    "lighthouse": "^12.6.1",
     "@apidevtools/swagger-parser": "^10.1.1",
     "@eslint/js": "^9.15.0",
     "eslint": "^9.15.0",

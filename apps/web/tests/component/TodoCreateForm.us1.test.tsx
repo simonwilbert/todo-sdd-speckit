@@ -45,7 +45,9 @@ describe("TodoCreateForm (US1)", () => {
           defer.resolve = resolve;
         }),
     );
-    const { rerender } = render(<TodoCreateForm onCreate={onCreate} isSubmitting={false} />);
+    const { rerender } = render(
+      <TodoCreateForm onCreate={onCreate} isSubmitting={false} />,
+    );
     const input = screen.getByRole("textbox", { name: /^New task$/i });
     await user.type(input, "Walk the dog");
     const click = user.click(screen.getByRole("button", { name: /add task/i }));

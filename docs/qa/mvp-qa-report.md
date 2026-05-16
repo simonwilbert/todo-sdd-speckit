@@ -25,6 +25,12 @@ All specs under `tests/e2e/journeys/`:
 3. `us3.delete-undo.spec.ts` — US3
 4. `us4.empty-loading-error.spec.ts` — US4
 5. `us5.responsive-a11y.spec.ts` — US5 (includes axe critical/serious gate)
+6. `performance.spec.ts` — SC-001 / SC-003 / SC-004 timing (mocked API)
+7. `a11y-primary-screens.spec.ts` — SC-005 axe on primary screens (mocked API)
+
+## Performance & accessibility automation
+
+See [performance-report.md](./performance-report.md). Root scripts: `npm run perf`, `npm run a11y`, `npm run perf:lighthouse`.
 
 CI currently runs `npm run e2e -- --project=chromium-desktop` for speed; mobile project runs locally or when invoked explicitly.
 

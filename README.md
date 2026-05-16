@@ -34,6 +34,9 @@ npm ci
 npm run ci                 # format, lint, typecheck, all workspace tests
 npm run contracts:lint     # validate OpenAPI contract file
 npm run e2e                # Playwright (see quickstart for DATABASE_URL / stack)
+npm run perf               # Playwright timing budgets (SC-001, SC-003, SC-004)
+npm run a11y               # jest-axe (web) + Playwright axe (mocked API)
+npm run perf:lighthouse    # Lighthouse snapshot (dev server on :5174)
 ```
 
 This repository uses **npm workspaces** (`@todo/web`, `@todo/api`, `@todo/shared`, `@todo/e2e`). Node **20 or 22** is supported per CI.

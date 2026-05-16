@@ -7,3 +7,4 @@ package-lock.json
 yarn.lock
 .specify
 .cursor
+docs/qa/lighthouse-latest.json
