@@ -3,7 +3,7 @@
 **Feature**: 001-personal-todo-app  
 **Plan**: [plan.md](./plan.md)
 
-This is the one-page "clone → up → test" walkthrough for the MVP. The repository uses **npm workspaces** (not pnpm). For a high-level overview and BMAD artefact index, see the top-level [README.md](../../README.md).
+This is the one-page "clone → up → test" walkthrough for the MVP. The repository uses **npm workspaces** (not pnpm). For course deliverables and artefact index, see the top-level [README.md](../../README.md) and [docs/course-activity-compliance.md](../../docs/course-activity-compliance.md).
 
 ## Prerequisites
 

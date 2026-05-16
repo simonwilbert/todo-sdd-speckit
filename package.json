@@ -20,6 +20,8 @@
     "perf": "npm run playwright -w @todo/e2e -- journeys/performance.spec.ts --project=chromium-mobile",
     "perf:lighthouse": "node scripts/run-lighthouse.mjs",
     "a11y": "npm run test:a11y -w @todo/web && env -u DATABASE_URL npm run playwright -w @todo/e2e -- journeys/a11y-primary-screens.spec.ts --project=chromium-desktop",
+    "verify": "npm run ci && npm run contracts:lint && env -u DATABASE_URL npm run perf && npm run a11y",
+    "verify:full": "npm run verify && npm run e2e -- --project=chromium-desktop",
     "ci": "npm run format:check && npm run lint && npm run typecheck && npm run test",
     "contracts:lint": "node scripts/validate-openapi.mjs"
   },

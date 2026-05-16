@@ -1,46 +1,80 @@
 # Personal Todo App (Spec Kit)
 
-Full-stack TypeScript monorepo for a **personal todo** MVP: create, list, toggle completion, delete with brief undo, empty/loading/error states, and responsive accessible UI. The feature is specified and tracked under BMAD-style artefacts in `specs/001-personal-todo-app/`.
+Full-stack TypeScript monorepo for a **personal todo** MVP: create, list, toggle completion, delete with brief undo, empty/loading/error states, and responsive accessible UI. Built with **Spec-Driven Development** (Spec Kit) to meet the course activity requirements (BMAD-equivalent artefacts, QA from day one, Docker deployment).
 
-## Quick links
+## Course / assignment deliverables
 
-- **Clone → run → test**: [specs/001-personal-todo-app/quickstart.md](specs/001-personal-todo-app/quickstart.md)
-- **Product spec**: [specs/001-personal-todo-app/spec.md](specs/001-personal-todo-app/spec.md)
-- **Implementation plan**: [specs/001-personal-todo-app/plan.md](specs/001-personal-todo-app/plan.md)
-- **REST contract (OpenAPI 3.1)**: [specs/001-personal-todo-app/contracts/openapi.yaml](specs/001-personal-todo-app/contracts/openapi.yaml)
-- **Data model**: [specs/001-personal-todo-app/data-model.md](specs/001-personal-todo-app/data-model.md)
-- **Research / decisions**: [specs/001-personal-todo-app/research.md](specs/001-personal-todo-app/research.md)
-- **Architecture (mirrored from plan)**: [docs/architecture.md](docs/architecture.md)
-- **Constitution (quality gates)**: [.specify/memory/constitution.md](.specify/memory/constitution.md)
-- **Professional UI epic (002)**: [specs/002-professional-ui/spec.md](specs/002-professional-ui/spec.md)
-- **BMAD vs Spec Kit (comparison brief)**: [docs/bmad-vs-speckit-comparison.md](docs/bmad-vs-speckit-comparison.md)
+| Deliverable                              | Location                                                                                     |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Compliance matrix** (success criteria) | [docs/course-activity-compliance.md](docs/course-activity-compliance.md)                     |
+| **How Spec Kit guided implementation**   | [docs/how-speckit-guided-implementation.md](docs/how-speckit-guided-implementation.md)       |
+| **AI integration documentation**         | [docs/ai-integration.md](docs/ai-integration.md)                                             |
+| **BMAD vs Spec Kit comparison**          | [docs/bmad-vs-speckit-comparison.md](docs/bmad-vs-speckit-comparison.md)                     |
+| **Project brief (PRD)**                  | [specs/001-personal-todo-app/project-brief.md](specs/001-personal-todo-app/project-brief.md) |
+| **Test strategy**                        | [specs/001-personal-todo-app/test-strategy.md](specs/001-personal-todo-app/test-strategy.md) |
+| **QA reports**                           | [docs/qa/](docs/qa/) (coverage, performance, a11y, security)                                 |
 
-## Repository layout
-
-| Area                             | Path                       |
-| -------------------------------- | -------------------------- |
-| React + Vite frontend            | `apps/web/`                |
-| Express + Prisma API             | `apps/api/`                |
-| Shared types + zod wire schemas  | `packages/shared/`         |
-| Playwright E2E journeys          | `tests/e2e/journeys/`      |
-| Docker Compose (dev / test)      | `docker/`                  |
-| QA and release notes             | `docs/qa/`                 |
-| AI / MCP usage log (append-only) | `docs/ai-mcp-usage-log.md` |
-
-## Common commands
+## Quick start
 
 ```bash
 npm ci
-npm run ci                 # format, lint, typecheck, all workspace tests
-npm run contracts:lint     # validate OpenAPI contract file
-npm run e2e                # Playwright (see quickstart for DATABASE_URL / stack)
-npm run perf               # Playwright timing budgets (SC-001, SC-003, SC-004)
-npm run a11y               # jest-axe (web) + Playwright axe (mocked API)
-npm run perf:lighthouse    # Lighthouse snapshot (dev server on :5174)
+cp docker/.env.dev.example docker/.env.dev   # one-time
+docker compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml up -d
+# Open http://localhost:5173 when healthy
 ```
 
-This repository uses **npm workspaces** (`@todo/web`, `@todo/api`, `@todo/shared`, `@todo/e2e`). Node **20 or 22** is supported per CI.
+Full steps: [specs/001-personal-todo-app/quickstart.md](specs/001-personal-todo-app/quickstart.md)
+
+## Spec Kit artefacts (feature 001)
+
+- **Product spec**: [specs/001-personal-todo-app/spec.md](specs/001-personal-todo-app/spec.md)
+- **Implementation plan**: [specs/001-personal-todo-app/plan.md](specs/001-personal-todo-app/plan.md)
+- **REST contract**: [specs/001-personal-todo-app/contracts/openapi.yaml](specs/001-personal-todo-app/contracts/openapi.yaml)
+- **Tasks** (implementation checklist): [specs/001-personal-todo-app/tasks.md](specs/001-personal-todo-app/tasks.md)
+- **Architecture**: [docs/architecture.md](docs/architecture.md)
+- **Constitution**: [.specify/memory/constitution.md](.specify/memory/constitution.md)
+
+Optional UI epic: [specs/002-professional-ui/spec.md](specs/002-professional-ui/spec.md)
+
+## Repository layout
+
+| Area                  | Path                       |
+| --------------------- | -------------------------- |
+| React + Vite frontend | `apps/web/`                |
+| Express + Prisma API  | `apps/api/`                |
+| Shared types + zod    | `packages/shared/`         |
+| Playwright E2E        | `tests/e2e/journeys/`      |
+| Docker Compose        | `docker/`                  |
+| QA reports            | `docs/qa/`                 |
+| AI log (append-only)  | `docs/ai-mcp-usage-log.md` |
+
+## Commands
+
+```bash
+npm run ci                 # format, lint, typecheck, Vitest + coverage (≥70%)
+npm run contracts:lint     # OpenAPI validation
+npm run e2e                # Playwright (set DATABASE_URL for full stack)
+npm run perf               # SC-001/003/004 timing (mocked API)
+npm run a11y               # jest-axe + Playwright axe (mocked)
+npm run perf:lighthouse    # Lighthouse snapshot (dev on :5174)
+npm run verify             # ci + contracts + perf + a11y
+npm run verify:full        # verify + E2E (needs DATABASE_URL + Postgres)
+```
+
+Node **20 or 22** (npm workspaces: `@todo/web`, `@todo/api`, `@todo/shared`, `@todo/e2e`).
+
+## Success criteria (summary)
+
+| Criterion     | Target               | How we verify                         |
+| ------------- | -------------------- | ------------------------------------- |
+| Working app   | CRUD + undo + states | Manual + E2E US1–US4                  |
+| Coverage      | ≥70%                 | `npm run ci`                          |
+| E2E           | ≥5 journeys          | US1–US5 Playwright specs              |
+| Docker        | compose up           | `docker/docker-compose.yml`           |
+| Accessibility | 0 critical axe       | US5, `a11y-primary-screens`, jest-axe |
+
+Details: [docs/course-activity-compliance.md](docs/course-activity-compliance.md)
 
 ## Contributing
 
-Pull requests should link a user story (`US1`–`US5`) when they deliver story-scoped behaviour, and satisfy the checklist in [`.github/pull_request_template.md`](.github/pull_request_template.md).
+Pull requests should link a user story (`US1`–`US5`) when story-scoped; see [`.github/pull_request_template.md`](.github/pull_request_template.md).

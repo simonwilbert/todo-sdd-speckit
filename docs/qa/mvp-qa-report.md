@@ -47,6 +47,21 @@ CI currently runs `npm run e2e -- --project=chromium-desktop` for speed; mobile 
   `git tag -a v0.1.0-rc.1 -m "Release candidate: Personal Todo App MVP (001)"`  
   then `git push origin v0.1.0-rc.1` if your process publishes tags.
 
+## Course activity alignment
+
+Full mapping to assignment steps and success criteria: [course-activity-compliance.md](../course-activity-compliance.md).
+
+| QA deliverable | Report                                             |
+| -------------- | -------------------------------------------------- |
+| Coverage       | [coverage-report.md](./coverage-report.md)         |
+| Performance    | [performance-report.md](./performance-report.md)   |
+| Accessibility  | [mvp-a11y-review.md](./mvp-a11y-review.md)         |
+| Security       | [mvp-security-review.md](./mvp-security-review.md) |
+| AI integration | [ai-integration.md](../ai-integration.md)          |
+
+**Verify locally**: `npm run verify` (no DB) · `npm run verify:full` (with `DATABASE_URL` + E2E).
+
 ## Follow-ups
 
 - Optionally extend CI to run `chromium-mobile` for US5 viewport coverage on every PR (trade-off: runtime).
+- Run `npm run verify:full` before submission if graders require full E2E with database.
