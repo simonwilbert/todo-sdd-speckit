@@ -37,6 +37,8 @@ describe("Professional UI (002 US1)", () => {
           isToggling={false}
           onToggleCompleted={vi.fn()}
           onRequestDelete={vi.fn()}
+          onUpdateText={vi.fn().mockResolvedValue(undefined)}
+          isUpdatingText={false}
         />
       </ul>,
     );

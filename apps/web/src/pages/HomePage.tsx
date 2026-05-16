@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { QueryErrorBanner } from "../components/QueryErrorBanner.js";
 import { TodoCreateForm } from "../components/TodoCreateForm.js";
 import { TodoEmptyState } from "../components/TodoEmptyState.js";
@@ -10,6 +10,20 @@ export function HomePage() {
   const todosQuery = useTodosQuery();
   const createMutation = useCreateTodoMutation();
   const [showDelayedListLoading, setShowDelayedListLoading] = useState(false);
+  const didInitialTaskFocus = useRef(false);
+
+  const focusNewTaskInput = useCallback(() => {
+    queueMicrotask(() => {
+      document.getElementById(taskInputId)?.focus();
+    });
+  }, [taskInputId]);
+
+  useEffect(() => {
+    if (todosQuery.status === "success" && !didInitialTaskFocus.current) {
+      didInitialTaskFocus.current = true;
+      focusNewTaskInput();
+    }
+  }, [todosQuery.status, focusNewTaskInput]);
 
   useEffect(() => {
     if (!todosQuery.isPending) {
@@ -67,7 +81,9 @@ export function HomePage() {
         />
       ) : null}
 
-      {showTodoList ? <TodoList todos={todos} /> : null}
+      {showTodoList ? (
+        <TodoList todos={todos} onFocusNewTaskInput={focusNewTaskInput} />
+      ) : null}
     </section>
   );
 }

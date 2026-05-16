@@ -1,3 +1,4 @@
+import type { TodoPatch } from "@todo/shared";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createTodoRequest, listTodosRequest, patchTodoRequest } from "./apiClient.js";
 
@@ -20,11 +21,11 @@ export function useCreateTodoMutation() {
   });
 }
 
-export function useToggleTodoMutation() {
+export function usePatchTodoMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, completed }: { id: string; completed: boolean }) =>
-      patchTodoRequest(id, { completed }),
+    mutationFn: ({ id, patch }: { id: string; patch: TodoPatch }) =>
+      patchTodoRequest(id, patch),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: todosQueryKey });
     },

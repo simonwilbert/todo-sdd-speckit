@@ -1,8 +1,10 @@
+import { AmbientCurves } from "./components/AmbientCurves.js";
 import { HomePage } from "./pages/HomePage.js";
 
 export function App() {
   return (
     <>
+      <AmbientCurves />
       <a className="skip-link" href="#app-main">
         Skip to main content
       </a>

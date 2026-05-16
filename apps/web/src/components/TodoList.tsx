@@ -2,7 +2,7 @@ import type { Todo } from "@todo/shared";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useRef, useState } from "react";
 import { deleteTodoRequest } from "../services/apiClient.js";
-import { todosQueryKey, useToggleTodoMutation } from "../services/todoQueries.js";
+import { todosQueryKey, usePatchTodoMutation } from "../services/todoQueries.js";
 import { TodoDeleteUndo } from "./TodoDeleteUndo.js";
 import { TodoItem } from "./TodoItem.js";
 
@@ -14,11 +14,13 @@ function sortTodosDesc(a: Todo, b: Todo): number {
 
 export type TodoListProps = {
   todos: Todo[];
+  /** Called when a task is removed from the list (optimistic delete) and after server delete completes. */
+  onFocusNewTaskInput?: () => void;
 };
 
-export function TodoList({ todos }: TodoListProps) {
+export function TodoList({ todos, onFocusNewTaskInput }: TodoListProps) {
   const queryClient = useQueryClient();
-  const toggle = useToggleTodoMutation();
+  const patchTodo = usePatchTodoMutation();
   const [pendingDelete, setPendingDelete] = useState<Todo | null>(null);
   const pendingRef = useRef<Todo | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
@@ -29,17 +31,19 @@ export function TodoList({ todos }: TodoListProps) {
         await deleteTodoRequest(todo.id);
         await queryClient.invalidateQueries({ queryKey: todosQueryKey });
         setDeleteError(null);
+        onFocusNewTaskInput?.();
       } catch (e) {
         await queryClient.invalidateQueries({ queryKey: todosQueryKey });
         setDeleteError(e instanceof Error ? e.message : "Could not delete task");
       }
     },
-    [queryClient],
+    [queryClient, onFocusNewTaskInput],
   );
 
   const handleRequestDelete = useCallback(
     (todo: Todo) => {
       setDeleteError(null);
+      onFocusNewTaskInput?.();
       if (pendingRef.current) {
         const prev = pendingRef.current;
         pendingRef.current = null;
@@ -54,7 +58,7 @@ export function TodoList({ todos }: TodoListProps) {
       });
       setPendingDelete(todo);
     },
-    [flushPendingServerDelete, queryClient],
+    [flushPendingServerDelete, onFocusNewTaskInput, queryClient],
   );
 
   const handleUndo = useCallback(() => {
@@ -89,8 +93,22 @@ export function TodoList({ todos }: TodoListProps) {
           <TodoItem
             key={todo.id}
             todo={todo}
-            isToggling={toggle.isPending && toggle.variables?.id === todo.id}
-            onToggleCompleted={(completed) => toggle.mutate({ id: todo.id, completed })}
+            isToggling={
+              patchTodo.isPending &&
+              patchTodo.variables?.id === todo.id &&
+              patchTodo.variables.patch.completed !== undefined
+            }
+            isUpdatingText={
+              patchTodo.isPending &&
+              patchTodo.variables?.id === todo.id &&
+              patchTodo.variables.patch.text !== undefined
+            }
+            onToggleCompleted={(completed) =>
+              patchTodo.mutate({ id: todo.id, patch: { completed } })
+            }
+            onUpdateText={async (text) => {
+              await patchTodo.mutateAsync({ id: todo.id, patch: { text } });
+            }}
             onRequestDelete={() => handleRequestDelete(todo)}
           />
         ))}

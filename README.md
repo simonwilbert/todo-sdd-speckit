@@ -13,6 +13,7 @@ Full-stack TypeScript monorepo for a **personal todo** MVP: create, list, toggle
 - **Architecture (mirrored from plan)**: [docs/architecture.md](docs/architecture.md)
 - **Constitution (quality gates)**: [.specify/memory/constitution.md](.specify/memory/constitution.md)
 - **Professional UI epic (002)**: [specs/002-professional-ui/spec.md](specs/002-professional-ui/spec.md)
+- **BMAD vs Spec Kit (comparison brief)**: [docs/bmad-vs-speckit-comparison.md](docs/bmad-vs-speckit-comparison.md)
 
 ## Repository layout
 

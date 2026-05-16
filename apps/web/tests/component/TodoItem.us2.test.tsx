@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import type { Todo } from "@todo/shared";
@@ -22,6 +22,8 @@ describe("TodoItem (US2)", () => {
         onToggleCompleted={onToggle}
         isToggling={false}
         onRequestDelete={onDelete}
+        onUpdateText={vi.fn().mockResolvedValue(undefined)}
+        isUpdatingText={false}
       />,
     );
     expect(screen.getByRole("checkbox", { name: /buy oat milk/i })).toBeInTheDocument();
@@ -37,6 +39,8 @@ describe("TodoItem (US2)", () => {
         onToggleCompleted={onToggle}
         isToggling={false}
         onRequestDelete={onDelete}
+        onUpdateText={vi.fn().mockResolvedValue(undefined)}
+        isUpdatingText={false}
       />,
     );
     await user.click(screen.getByRole("checkbox", { name: /buy oat milk/i }));
@@ -53,6 +57,8 @@ describe("TodoItem (US2)", () => {
         onToggleCompleted={onToggle}
         isToggling={false}
         onRequestDelete={onDelete}
+        onUpdateText={vi.fn().mockResolvedValue(undefined)}
+        isUpdatingText={false}
       />,
     );
     const text = screen.getByText("Buy oat milk");
@@ -68,8 +74,33 @@ describe("TodoItem (US2)", () => {
         onToggleCompleted={onToggle}
         isToggling
         onRequestDelete={onDelete}
+        onUpdateText={vi.fn().mockResolvedValue(undefined)}
+        isUpdatingText={false}
       />,
     );
     expect(screen.getByRole("checkbox", { name: /buy oat milk/i })).toBeDisabled();
+  });
+
+  it("saves edited text on blur", async () => {
+    const user = userEvent.setup();
+    const onUpdate = vi.fn().mockResolvedValue(undefined);
+    render(
+      <TodoItem
+        todo={baseTodo}
+        onToggleCompleted={vi.fn()}
+        isToggling={false}
+        onRequestDelete={vi.fn()}
+        onUpdateText={onUpdate}
+        isUpdatingText={false}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: /edit task: buy oat milk/i }));
+    const field = screen.getByRole("textbox", { name: /edit text: buy oat milk/i });
+    await user.clear(field);
+    await user.type(field, "Buy almond milk");
+    await user.tab();
+    await waitFor(() => {
+      expect(onUpdate).toHaveBeenCalledWith("Buy almond milk");
+    });
   });
 });

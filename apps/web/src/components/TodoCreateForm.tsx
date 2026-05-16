@@ -1,5 +1,5 @@
 import { TODO_TEXT_MAX_LENGTH } from "@todo/shared";
-import { type FormEvent, useId, useState } from "react";
+import { type FormEvent, useEffect, useId, useRef, useState } from "react";
 
 export type TodoCreateFormProps = {
   onCreate: (text: string) => Promise<void>;
@@ -22,8 +22,29 @@ export function TodoCreateForm({
   const errorId = useId();
   const addedLiveId = useId();
   const [addedAnnouncement, setAddedAnnouncement] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const refocusAfterCreateRef = useRef(false);
+  const isSubmittingRef = useRef(isSubmitting);
+  isSubmittingRef.current = isSubmitting;
+
+  useEffect(() => {
+    if (!isSubmitting && refocusAfterCreateRef.current) {
+      refocusAfterCreateRef.current = false;
+      inputRef.current?.focus();
+    }
+  }, [isSubmitting]);
 
   const validationMessage = localError ?? serverError ?? null;
+
+  function scheduleRefocusAfterCreate() {
+    if (isSubmittingRef.current) {
+      refocusAfterCreateRef.current = true;
+      return;
+    }
+    queueMicrotask(() => {
+      inputRef.current?.focus();
+    });
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -42,6 +63,7 @@ export function TodoCreateForm({
       setText("");
       setAddedAnnouncement(`Task added: ${trimmed}`);
       window.setTimeout(() => setAddedAnnouncement(""), 4000);
+      scheduleRefocusAfterCreate();
     } catch {
       /* mutation / request errors surface via serverError */
     }
@@ -60,6 +82,7 @@ export function TodoCreateForm({
         <label htmlFor={fieldId}>New task</label>
         <div className="todo-create-form__row">
           <input
+            ref={inputRef}
             id={fieldId}
             className="todo-create-form__input"
             name="text"
